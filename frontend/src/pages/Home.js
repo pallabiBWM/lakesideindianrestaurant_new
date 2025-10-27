@@ -180,13 +180,20 @@ const Home = () => {
               </div>
             ))}
           </div>
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/menu"
+              to="/menu/dine-in"
               className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block"
-              data-testid="view-full-menu"
+              data-testid="view-dinein-menu"
             >
-              View Full Menu
+              View Dine-in Menu
+            </Link>
+            <Link
+              to="/menu/takeaway"
+              className="bg-black hover:bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block"
+              data-testid="view-takeaway-menu"
+            >
+              View Takeaway Menu
             </Link>
           </div>
         </div>

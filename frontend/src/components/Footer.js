@@ -46,7 +46,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start text-gray-400">
                 <MapPin className="w-5 h-5 mr-2 text-red-600 flex-shrink-0 mt-1" />
-                <span>53 Morang Road, Hawthorn VIC 3122</span>
+                <span>94 Belmore Street Yarrawonga 3730</span>
               </li>
               <li className="flex items-center text-gray-400">
                 <Phone className="w-5 h-5 mr-2 text-red-600" />

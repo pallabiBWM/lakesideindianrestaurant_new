@@ -181,13 +181,15 @@ const Home = () => {
           <h2 className="text-4xl font-bold text-center mb-12">Featured <span className="text-red-600">Dishes</span></h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredItems.map((item) => (
-              <div key={item.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-testid={`featured-dish-${item.id}`}>
-                <img src={item.image} alt={item.name} className="w-full h-48 object-cover" />
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{item.name}</h3>
-                  <p className="text-gray-600 mb-4 text-sm">{item.description}</p>
-                  <p className="text-2xl font-bold text-red-600">${item.price.toFixed(2)}</p>
+              <div key={item.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow p-6" data-testid={`featured-dish-${item.id}`}>
+                <div className="mb-2">
+                  <span className="text-xs font-semibold text-red-600 bg-red-50 px-2 py-1 rounded">
+                    {item.category}
+                  </span>
                 </div>
+                <h3 className="text-xl font-bold mb-2">{item.name}</h3>
+                <p className="text-gray-600 mb-4 text-sm">{item.description}</p>
+                <p className="text-2xl font-bold text-red-600">${item.price.toFixed(2)}</p>
               </div>
             ))}
           </div>

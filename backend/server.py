@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Body
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -8,8 +8,9 @@ from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 import uuid
-from datetime import datetime, timezone
-
+from datetime import datetime, timezone, timedelta
+from auth import verify_password, get_password_hash, create_access_token, verify_token
+from email_service import EmailService
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -18,6 +19,9 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+# Email service
+email_service = EmailService()
 
 # Create the main app without a prefix
 app = FastAPI()
@@ -28,6 +32,32 @@ api_router = APIRouter(prefix="/api")
 
 # ============= MODELS =============
 
+# Admin Models
+class AdminLogin(BaseModel):
+    username: str
+    password: str
+
+class AdminUser(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    username: str
+    password_hash: str
+    email: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class AdminSettings(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = "settings"
+    admin_email: str
+    restaurant_name: str
+    restaurant_phone: str
+    restaurant_address: str
+    opening_hours: dict
+    smtp_host: Optional[str] = None
+    smtp_port: Optional[int] = None
+    smtp_user: Optional[str] = None
+    smtp_password: Optional[str] = None
+
 # Menu Item Models
 class MenuItem(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -37,6 +67,7 @@ class MenuItem(BaseModel):
     description: str
     price: float
     category: str
+    menu_type: str  # 'dine-in' or 'takeaway'
     image: str
     featured: bool = False
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
@@ -46,8 +77,18 @@ class MenuItemCreate(BaseModel):
     description: str
     price: float
     category: str
+    menu_type: str
     image: str
     featured: bool = False
+
+class MenuItemUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[float] = None
+    category: Optional[str] = None
+    menu_type: Optional[str] = None
+    image: Optional[str] = None
+    featured: Optional[bool] = None
 
 # Cart Models
 class CartItem(BaseModel):
@@ -121,6 +162,12 @@ class Testimonial(BaseModel):
     comment: str
     image: Optional[str] = None
 
+class TestimonialCreate(BaseModel):
+    name: str
+    rating: int
+    comment: str
+    image: Optional[str] = None
+
 # Gallery Models
 class GalleryImage(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -130,21 +177,102 @@ class GalleryImage(BaseModel):
     title: str
     description: Optional[str] = None
 
+class GalleryImageCreate(BaseModel):
+    url: str
+    title: str
+    description: Optional[str] = None
 
-# ============= ROUTES =============
+
+# ============= ADMIN ROUTES =============
+
+@api_router.post("/admin/login")
+async def admin_login(credentials: AdminLogin):
+    # Check if admin exists
+    admin = await db.admin_users.find_one({"username": credentials.username}, {"_id": 0})
+    
+    if not admin or not verify_password(credentials.password, admin['password_hash']):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    # Create access token
+    access_token = create_access_token(data={"sub": admin['username']})
+    
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "username": admin['username']
+    }
+
+@api_router.get("/admin/verify")
+async def verify_admin(username: str = Depends(verify_token)):
+    return {"username": username, "authenticated": True}
+
+@api_router.get("/admin/settings")
+async def get_admin_settings(username: str = Depends(verify_token)):
+    settings = await db.admin_settings.find_one({"id": "settings"}, {"_id": 0})
+    if not settings:
+        # Return default settings
+        return {
+            "id": "settings",
+            "admin_email": "pallabi.dipa@gmail.com",
+            "restaurant_name": "Lakeside Indian Restaurant",
+            "restaurant_phone": "+1 (555) 123-4567",
+            "restaurant_address": "123 Lakeside Drive, Waterfront District, City Name, State 12345",
+            "opening_hours": {
+                "monday_thursday": "11:00 AM - 10:00 PM",
+                "friday_saturday": "11:00 AM - 11:00 PM",
+                "sunday": "12:00 PM - 9:00 PM"
+            }
+        }
+    return settings
+
+@api_router.put("/admin/settings")
+async def update_admin_settings(settings: AdminSettings, username: str = Depends(verify_token)):
+    settings_dict = settings.model_dump()
+    await db.admin_settings.update_one(
+        {"id": "settings"},
+        {"$set": settings_dict},
+        upsert=True
+    )
+    return {"message": "Settings updated successfully"}
+
+# ============= PUBLIC ROUTES =============
 
 @api_router.get("/")
 async def root():
     return {"message": "Lakeside Indian Restaurant API"}
 
-# Menu Routes
+# Settings Route (Public - for getting contact info)
+@api_router.get("/settings")
+async def get_public_settings():
+    settings = await db.admin_settings.find_one({"id": "settings"}, {"_id": 0})
+    if not settings:
+        return {
+            "restaurant_name": "Lakeside Indian Restaurant",
+            "restaurant_phone": "+1 (555) 123-4567",
+            "restaurant_address": "123 Lakeside Drive, Waterfront District, City Name, State 12345",
+            "admin_email": "pallabi.dipa@gmail.com"
+        }
+    return {
+        "restaurant_name": settings.get("restaurant_name"),
+        "restaurant_phone": settings.get("restaurant_phone"),
+        "restaurant_address": settings.get("restaurant_address"),
+        "admin_email": settings.get("admin_email")
+    }
+
+# Menu Routes (Public)
 @api_router.get("/menu", response_model=List[MenuItem])
-async def get_menu_items(category: Optional[str] = None, featured: Optional[bool] = None):
+async def get_menu_items(
+    category: Optional[str] = None,
+    featured: Optional[bool] = None,
+    menu_type: Optional[str] = None
+):
     query = {}
     if category:
         query['category'] = category
     if featured is not None:
         query['featured'] = featured
+    if menu_type:
+        query['menu_type'] = menu_type
     
     menu_items = await db.menu_items.find(query, {"_id": 0}).to_list(1000)
     
@@ -165,8 +293,17 @@ async def get_menu_item(item_id: str):
     
     return item
 
-@api_router.post("/menu", response_model=MenuItem)
-async def create_menu_item(item: MenuItemCreate):
+@api_router.get("/categories")
+async def get_categories(menu_type: Optional[str] = None):
+    query = {}
+    if menu_type:
+        query['menu_type'] = menu_type
+    categories = await db.menu_items.distinct("category", query)
+    return {"categories": categories}
+
+# Admin Menu Routes
+@api_router.post("/admin/menu", response_model=MenuItem)
+async def create_menu_item(item: MenuItemCreate, username: str = Depends(verify_token)):
     menu_item = MenuItem(**item.model_dump())
     doc = menu_item.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
@@ -174,10 +311,31 @@ async def create_menu_item(item: MenuItemCreate):
     await db.menu_items.insert_one(doc)
     return menu_item
 
-@api_router.get("/categories")
-async def get_categories():
-    categories = await db.menu_items.distinct("category")
-    return {"categories": categories}
+@api_router.put("/admin/menu/{item_id}")
+async def update_menu_item(item_id: str, item: MenuItemUpdate, username: str = Depends(verify_token)):
+    update_data = {k: v for k, v in item.model_dump().items() if v is not None}
+    
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No update data provided")
+    
+    result = await db.menu_items.update_one(
+        {"id": item_id},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Menu item not found")
+    
+    return {"message": "Menu item updated successfully"}
+
+@api_router.delete("/admin/menu/{item_id}")
+async def delete_menu_item(item_id: str, username: str = Depends(verify_token)):
+    result = await db.menu_items.delete_one({"id": item_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Menu item not found")
+    
+    return {"message": "Menu item deleted successfully"}
 
 # Cart Routes
 @api_router.get("/cart/{user_id}", response_model=Cart)
@@ -299,7 +457,26 @@ async def submit_contact_form(form: ContactFormCreate):
     doc['created_at'] = doc['created_at'].isoformat()
     
     await db.contact_forms.insert_one(doc)
+    
+    # Send email notification to admin
+    settings = await db.admin_settings.find_one({"id": "settings"}, {"_id": 0})
+    admin_email = settings.get('admin_email', 'pallabi.dipa@gmail.com') if settings else 'pallabi.dipa@gmail.com'
+    
+    contact_data = doc.copy()
+    contact_data['created_at'] = contact.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    await email_service.send_contact_notification(admin_email, contact_data)
+    
     return contact
+
+@api_router.get("/admin/contacts", response_model=List[ContactForm])
+async def get_all_contacts(username: str = Depends(verify_token)):
+    contacts = await db.contact_forms.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    
+    for contact in contacts:
+        if isinstance(contact.get('created_at'), str):
+            contact['created_at'] = datetime.fromisoformat(contact['created_at'])
+    
+    return contacts
 
 # Reservation Routes
 @api_router.post("/reservation", response_model=Reservation)
@@ -309,7 +486,26 @@ async def create_reservation(reservation: ReservationCreate):
     doc['created_at'] = doc['created_at'].isoformat()
     
     await db.reservations.insert_one(doc)
+    
+    # Send email notification to admin
+    settings = await db.admin_settings.find_one({"id": "settings"}, {"_id": 0})
+    admin_email = settings.get('admin_email', 'pallabi.dipa@gmail.com') if settings else 'pallabi.dipa@gmail.com'
+    
+    reservation_data = doc.copy()
+    reservation_data['created_at'] = reservation_obj.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    await email_service.send_reservation_notification(admin_email, reservation_data)
+    
     return reservation_obj
+
+@api_router.get("/admin/reservations", response_model=List[Reservation])
+async def get_all_reservations(username: str = Depends(verify_token)):
+    reservations = await db.reservations.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    
+    for reservation in reservations:
+        if isinstance(reservation.get('created_at'), str):
+            reservation['created_at'] = datetime.fromisoformat(reservation['created_at'])
+    
+    return reservations
 
 # Testimonials Routes
 @api_router.get("/testimonials", response_model=List[Testimonial])
@@ -317,11 +513,56 @@ async def get_testimonials():
     testimonials = await db.testimonials.find({}, {"_id": 0}).to_list(100)
     return testimonials
 
+@api_router.post("/admin/testimonials", response_model=Testimonial)
+async def create_testimonial(testimonial: TestimonialCreate, username: str = Depends(verify_token)):
+    testimonial_obj = Testimonial(**testimonial.model_dump())
+    doc = testimonial_obj.model_dump()
+    await db.testimonials.insert_one(doc)
+    return testimonial_obj
+
+@api_router.put("/admin/testimonials/{testimonial_id}")
+async def update_testimonial(testimonial_id: str, testimonial: TestimonialCreate, username: str = Depends(verify_token)):
+    update_data = testimonial.model_dump()
+    result = await db.testimonials.update_one(
+        {"id": testimonial_id},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Testimonial not found")
+    
+    return {"message": "Testimonial updated successfully"}
+
+@api_router.delete("/admin/testimonials/{testimonial_id}")
+async def delete_testimonial(testimonial_id: str, username: str = Depends(verify_token)):
+    result = await db.testimonials.delete_one({"id": testimonial_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Testimonial not found")
+    
+    return {"message": "Testimonial deleted successfully"}
+
 # Gallery Routes
 @api_router.get("/gallery", response_model=List[GalleryImage])
 async def get_gallery_images():
     images = await db.gallery_images.find({}, {"_id": 0}).to_list(100)
     return images
+
+@api_router.post("/admin/gallery", response_model=GalleryImage)
+async def create_gallery_image(image: GalleryImageCreate, username: str = Depends(verify_token)):
+    gallery_image = GalleryImage(**image.model_dump())
+    doc = gallery_image.model_dump()
+    await db.gallery_images.insert_one(doc)
+    return gallery_image
+
+@api_router.delete("/admin/gallery/{image_id}")
+async def delete_gallery_image(image_id: str, username: str = Depends(verify_token)):
+    result = await db.gallery_images.delete_one({"id": image_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Gallery image not found")
+    
+    return {"message": "Gallery image deleted successfully"}
 
 # Statistics Route
 @api_router.get("/statistics")

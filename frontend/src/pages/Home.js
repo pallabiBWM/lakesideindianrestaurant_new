@@ -137,18 +137,29 @@ const Home = () => {
 
       {/* About Us Preview Section */}
       <section className="py-16 px-4" data-testid="about-preview">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl font-bold mb-6">Welcome to <span className="text-red-600">Lakeside</span></h2>
-          <p className="text-gray-700 text-lg mb-6">
-            Experience the rich flavors of authentic Indian cuisine in a stunning lakeside setting. Our restaurant combines traditional recipes passed down through generations with modern culinary techniques to create an unforgettable dining experience. Each dish is prepared with fresh ingredients and aromatic spices that transport you to the heart of India.
-          </p>
-          <Link
-            to="/about"
-            className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors inline-block"
-            data-testid="read-more-about"
-          >
-            Read More
-          </Link>
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl font-bold mb-6">Welcome to <span className="text-red-600">Lakeside</span></h2>
+              <p className="text-gray-700 text-lg mb-6">
+                Experience the rich flavors of authentic Indian cuisine in a stunning lakeside setting. Our restaurant combines traditional recipes passed down through generations with modern culinary techniques to create an unforgettable dining experience. Each dish is prepared with fresh ingredients and aromatic spices that transport you to the heart of India.
+              </p>
+              <Link
+                to="/about"
+                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors inline-block"
+                data-testid="read-more-about"
+              >
+                Read More
+              </Link>
+            </div>
+            <div>
+              <img 
+                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4" 
+                alt="Restaurant Interior" 
+                className="rounded-lg shadow-xl w-full h-96 object-cover"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

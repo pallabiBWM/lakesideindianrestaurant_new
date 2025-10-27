@@ -56,8 +56,11 @@ function App() {
                       <AdminLayout>
                         <Routes>
                           <Route path="dashboard" element={<AdminDashboard />} />
+                          <Route path="menu" element={<AdminMenu />} />
                           <Route path="contacts" element={<AdminContacts />} />
                           <Route path="reservations" element={<AdminReservations />} />
+                          <Route path="testimonials" element={<AdminTestimonials />} />
+                          <Route path="gallery" element={<AdminGallery />} />
                           <Route path="settings" element={<AdminSettings />} />
                           <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
                         </Routes>

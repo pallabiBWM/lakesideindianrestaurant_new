@@ -2,7 +2,8 @@ import '@/App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
-import Menu from '@/pages/Menu';
+import DineInMenu from '@/pages/DineInMenu';
+import TakeawayMenu from '@/pages/TakeawayMenu';
 import Gallery from '@/pages/Gallery';
 import Contact from '@/pages/Contact';
 import Reservation from '@/pages/Reservation';
@@ -22,7 +23,8 @@ function App() {
               <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 <Route path="about" element={<About />} />
-                <Route path="menu" element={<Menu />} />
+                <Route path="menu/dine-in" element={<DineInMenu />} />
+                <Route path="menu/takeaway" element={<TakeawayMenu />} />
                 <Route path="gallery" element={<Gallery />} />
                 <Route path="contact" element={<Contact />} />
                 <Route path="reservation" element={<Reservation />} />

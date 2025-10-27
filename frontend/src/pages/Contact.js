@@ -152,7 +152,7 @@ const Contact = () => {
                   <MapPin className="w-6 h-6 text-red-600 mr-4 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold text-lg mb-1">Address</h3>
-                    <p className="text-gray-600">123 Lakeside Drive<br />Waterfront District<br />City Name, State 12345</p>
+                    <p className="text-gray-600">94 Belmore Street<br />Yarrawonga 3730</p>
                   </div>
                 </div>
                 <div className="flex items-start">

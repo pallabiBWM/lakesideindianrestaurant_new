@@ -673,6 +673,41 @@ async def delete_banner(banner_id: str, username: str = Depends(verify_token)):
     
     return {"message": "Banner deleted successfully"}
 
+@api_router.post("/admin/banners/upload")
+async def upload_banner_image(file: UploadFile = File(...), username: str = Depends(verify_token)):
+    """Upload a banner image and return the URL"""
+    try:
+        # Validate file type
+        allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
+        if file.content_type not in allowed_types:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Invalid file type. Allowed types: {', '.join(allowed_types)}"
+            )
+        
+        # Generate unique filename
+        file_extension = file.filename.split('.')[-1]
+        unique_filename = f"{uuid.uuid4()}.{file_extension}"
+        file_path = UPLOADS_DIR / unique_filename
+        
+        # Save file
+        async with aiofiles.open(file_path, 'wb') as f:
+            content = await file.read()
+            await f.write(content)
+        
+        # Get backend URL from environment
+        backend_url = os.environ.get('BACKEND_URL', 'http://localhost:8001')
+        image_url = f"{backend_url}/uploads/{unique_filename}"
+        
+        return {
+            "url": image_url,
+            "filename": unique_filename
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error uploading file: {str(e)}")
+
+
 
 # Include the router in the main app
 app.include_router(api_router)

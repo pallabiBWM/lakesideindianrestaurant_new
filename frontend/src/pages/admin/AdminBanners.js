@@ -43,6 +43,8 @@ const AdminBanners = () => {
 
   const handleAdd = () => {
     setEditingBanner(null);
+    setSelectedFile(null);
+    setPreviewUrl('');
     setFormData({
       image: '',
       title: '',
@@ -57,8 +59,47 @@ const AdminBanners = () => {
 
   const handleEdit = (banner) => {
     setEditingBanner(banner);
+    setSelectedFile(null);
+    setPreviewUrl(banner.image);
     setFormData(banner);
     setShowModal(true);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUploadImage = async () => {
+    if (!selectedFile) return null;
+    
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      
+      const response = await axios.post(`${API}/admin/banners/upload`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      
+      return response.data.url;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleDelete = async (id) => {

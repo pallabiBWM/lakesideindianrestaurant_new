@@ -93,11 +93,15 @@ const Home = () => {
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+    if (banners.length > 0) {
+      setCurrentSlide((prev) => (prev + 1) % banners.length);
+    }
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+    if (banners.length > 0) {
+      setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
+    }
   };
 
   return (

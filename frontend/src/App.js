@@ -18,6 +18,7 @@ import { WishlistProvider } from '@/context/WishlistContext';
 import { AdminAuthProvider } from '@/context/AdminAuthContext';
 import AdminLogin from '@/pages/admin/AdminLogin';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
+import AdminBanners from '@/pages/admin/AdminBanners';
 import AdminMenu from '@/pages/admin/AdminMenu';
 import AdminContacts from '@/pages/admin/AdminContacts';
 import AdminReservations from '@/pages/admin/AdminReservations';

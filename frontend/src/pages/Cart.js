@@ -106,24 +106,35 @@ const Cart = () => {
                   className="bg-white rounded-lg shadow-md p-6 flex items-center space-x-6"
                   data-testid={`cart-item-${item.id}`}
                 >
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-24 h-24 object-cover rounded-lg"
-                  />
                   <div className="flex-grow">
                     <h3 className="text-xl font-bold mb-2">{item.name}</h3>
                     <p className="text-gray-600 text-sm mb-2">{item.category}</p>
                     <p className="text-lg font-semibold text-red-600">${item.price.toFixed(2)}</p>
                   </div>
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-2">Quantity</p>
-                    <p className="text-2xl font-bold">{getItemQuantity(item.id)}</p>
+                  
+                  <div className="flex items-center space-x-3">
+                    <button
+                      onClick={() => updateQuantity(item.id, getItemQuantity(item.id) - 1)}
+                      className="bg-gray-200 hover:bg-gray-300 p-2 rounded-lg transition-colors"
+                      data-testid={`decrease-quantity-${item.id}`}
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="text-2xl font-bold w-12 text-center">{getItemQuantity(item.id)}</span>
+                    <button
+                      onClick={() => updateQuantity(item.id, getItemQuantity(item.id) + 1)}
+                      className="bg-gray-200 hover:bg-gray-300 p-2 rounded-lg transition-colors"
+                      data-testid={`increase-quantity-${item.id}`}
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
                   </div>
+                  
                   <div className="text-right">
                     <p className="text-sm text-gray-600 mb-2">Subtotal</p>
                     <p className="text-2xl font-bold text-red-600">${calculateSubtotal(item).toFixed(2)}</p>
                   </div>
+                  
                   <button
                     onClick={() => removeFromCart(item.id)}
                     className="text-red-600 hover:text-red-700 transition-colors"

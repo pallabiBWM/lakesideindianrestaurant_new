@@ -254,16 +254,26 @@ const AdminBanners = () => {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold mb-1">Image URL *</label>
+                  <label className="block text-sm font-semibold mb-1">Banner Image *</label>
                   <input
-                    type="url"
-                    value={formData.image}
-                    onChange={(e) => setFormData({...formData, image: e.target.value})}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
                     className="w-full px-3 py-2 border rounded-lg"
-                    placeholder="https://example.com/image.jpg"
-                    required
+                    required={!editingBanner}
                   />
-                  <p className="text-xs text-gray-500 mt-1">Enter a direct URL to an image</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Upload an image (JPG, PNG, GIF, or WebP)
+                  </p>
+                  {previewUrl && (
+                    <div className="mt-3">
+                      <img 
+                        src={previewUrl} 
+                        alt="Preview" 
+                        className="w-full h-48 object-cover rounded-lg border"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>

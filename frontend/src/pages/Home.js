@@ -16,6 +16,7 @@ const carouselImages = [
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [banners, setBanners] = useState([]);
   const [featuredItems, setFeaturedItems] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
   const [galleryImages, setGalleryImages] = useState([]);

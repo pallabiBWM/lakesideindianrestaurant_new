@@ -181,7 +181,7 @@ const AdminBanners = () => {
               {/* Banner Image */}
               <div className="relative">
                 <img 
-                  src={banner.image} 
+                  src={banner.image.startsWith('http') ? banner.image : `${BACKEND_URL}${banner.image}`}
                   alt={banner.title} 
                   className="w-full h-48 object-cover rounded-lg"
                 />

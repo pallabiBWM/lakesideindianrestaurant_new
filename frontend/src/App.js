@@ -59,6 +59,7 @@ function App() {
                       <AdminLayout>
                         <Routes>
                           <Route path="dashboard" element={<AdminDashboard />} />
+                          <Route path="banners" element={<AdminBanners />} />
                           <Route path="menu" element={<AdminMenu />} />
                           <Route path="contacts" element={<AdminContacts />} />
                           <Route path="reservations" element={<AdminReservations />} />

@@ -14,7 +14,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchMenuItems();
-  }, [cart]);
+  }, [cart.items.length]); // Re-fetch when cart items change
 
   const fetchMenuItems = async () => {
     if (cart.items.length === 0) {

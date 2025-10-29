@@ -16,6 +16,7 @@ const AdminLayout = ({ children }) => {
 
   const menuItems = [
     { path: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/admin/banners', icon: Image, label: 'Banners' },
     { path: '/admin/menu', icon: MenuIcon, label: 'Menu Items' },
     { path: '/admin/contacts', icon: MessageSquare, label: 'Contacts' },
     { path: '/admin/reservations', icon: Calendar, label: 'Reservations' },

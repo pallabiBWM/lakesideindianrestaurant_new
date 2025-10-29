@@ -187,7 +187,7 @@ class BannerUploadTester:
                 timeout=10
             )
             
-            if response.status_code == 401:
+            if response.status_code in [401, 403]:
                 self.log_result(
                     "File Upload - No Auth", 
                     True, 

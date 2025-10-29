@@ -40,6 +40,14 @@ const Cart = () => {
     return cartItem ? cartItem.quantity : 0;
   };
 
+  const calculateSubtotal = (item) => {
+    return item.price * getItemQuantity(item.id);
+  };
+
+  const calculateTotal = () => {
+    return menuItems.reduce((total, item) => total + calculateSubtotal(item), 0);
+  };
+
   const updateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) return;
     
@@ -58,10 +66,6 @@ const Cart = () => {
     } catch (error) {
       console.error('Error updating quantity:', error);
     }
-  };
-
-  const getCartTotal = () => {
-    return menuItems.reduce((total, item) => total + calculateSubtotal(item), 0);
   };
 
   if (loading) {

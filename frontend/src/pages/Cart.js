@@ -40,11 +40,27 @@ const Cart = () => {
     return cartItem ? cartItem.quantity : 0;
   };
 
-  const calculateSubtotal = (item) => {
-    return item.price * getItemQuantity(item.id);
+  const updateQuantity = async (itemId, newQuantity) => {
+    if (newQuantity < 1) return;
+    
+    try {
+      // Remove the item first
+      await axios.delete(`${API}/cart/${USER_ID}/remove/${itemId}`);
+      
+      // Add it back with new quantity
+      if (newQuantity > 0) {
+        await axios.post(`${API}/cart/${USER_ID}/add`, {
+          menu_item_id: itemId,
+          quantity: newQuantity
+        });
+      }
+      await fetchCart();
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
   };
 
-  const calculateTotal = () => {
+  const getCartTotal = () => {
     return menuItems.reduce((total, item) => total + calculateSubtotal(item), 0);
   };
 

@@ -39,6 +39,7 @@ function App() {
                 <Route path="/" element={<Layout />}>
                   <Route index element={<Home />} />
                   <Route path="about" element={<About />} />
+                  <Route path="menu" element={<MenuSelection />} />
                   <Route path="menu/dine-in" element={<DineInMenu />} />
                   <Route path="menu/takeaway" element={<TakeawayMenu />} />
                   <Route path="gallery" element={<Gallery />} />

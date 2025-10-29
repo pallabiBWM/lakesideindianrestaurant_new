@@ -355,15 +355,17 @@ const AdminBanners = () => {
                     type="button"
                     onClick={() => setShowModal(false)}
                     className="px-4 py-2 border rounded-lg hover:bg-gray-50"
+                    disabled={uploading}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg flex items-center space-x-2"
+                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={uploading}
                   >
                     <Save className="w-5 h-5" />
-                    <span>Save Banner</span>
+                    <span>{uploading ? 'Uploading...' : 'Save Banner'}</span>
                   </button>
                 </div>
               </form>

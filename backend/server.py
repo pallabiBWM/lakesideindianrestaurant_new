@@ -606,6 +606,63 @@ async def get_statistics():
         "team_members": 30
     }
 
+# Banner Routes (Public)
+@api_router.get("/banners", response_model=List[Banner])
+async def get_banners():
+    banners = await db.banners.find({"active": True}, {"_id": 0}).sort("order", 1).to_list(100)
+    
+    for banner in banners:
+        if isinstance(banner.get('created_at'), str):
+            banner['created_at'] = datetime.fromisoformat(banner['created_at'])
+    
+    return banners
+
+# Banner Routes (Admin)
+@api_router.get("/admin/banners", response_model=List[Banner])
+async def get_all_banners(username: str = Depends(verify_token)):
+    banners = await db.banners.find({}, {"_id": 0}).sort("order", 1).to_list(100)
+    
+    for banner in banners:
+        if isinstance(banner.get('created_at'), str):
+            banner['created_at'] = datetime.fromisoformat(banner['created_at'])
+    
+    return banners
+
+@api_router.post("/admin/banners", response_model=Banner)
+async def create_banner(banner: BannerCreate, username: str = Depends(verify_token)):
+    banner_obj = Banner(**banner.model_dump())
+    doc = banner_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    
+    await db.banners.insert_one(doc)
+    return banner_obj
+
+@api_router.put("/admin/banners/{banner_id}")
+async def update_banner(banner_id: str, banner: BannerUpdate, username: str = Depends(verify_token)):
+    update_data = {k: v for k, v in banner.model_dump().items() if v is not None}
+    
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No update data provided")
+    
+    result = await db.banners.update_one(
+        {"id": banner_id},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Banner not found")
+    
+    return {"message": "Banner updated successfully"}
+
+@api_router.delete("/admin/banners/{banner_id}")
+async def delete_banner(banner_id: str, username: str = Depends(verify_token)):
+    result = await db.banners.delete_one({"id": banner_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Banner not found")
+    
+    return {"message": "Banner deleted successfully"}
+
 
 # Include the router in the main app
 app.include_router(api_router)

@@ -182,6 +182,38 @@ class GalleryImageCreate(BaseModel):
     title: str
     description: Optional[str] = None
 
+# Banner Models
+class Banner(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    image: str
+    title: str
+    description: str
+    button_text: str
+    button_link: str
+    order: int = 0
+    active: bool = True
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class BannerCreate(BaseModel):
+    image: str
+    title: str
+    description: str
+    button_text: str
+    button_link: str
+    order: int = 0
+    active: bool = True
+
+class BannerUpdate(BaseModel):
+    image: Optional[str] = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    button_text: Optional[str] = None
+    button_link: Optional[str] = None
+    order: Optional[int] = None
+    active: Optional[bool] = None
+
 
 # ============= ADMIN ROUTES =============
 

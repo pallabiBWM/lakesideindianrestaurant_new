@@ -2,6 +2,7 @@ import '@/App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
+import MenuSelection from '@/pages/MenuSelection';
 import DineInMenu from '@/pages/DineInMenu';
 import TakeawayMenu from '@/pages/TakeawayMenu';
 import Gallery from '@/pages/Gallery';

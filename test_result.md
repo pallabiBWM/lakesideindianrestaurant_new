@@ -101,3 +101,106 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: |
+  Complete the banner image upload feature for Lakeside Indian Restaurant admin panel.
+  Replace URL input with file upload functionality for banner management.
+
+backend:
+  - task: "Banner file upload endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Created /api/admin/banners/upload endpoint with file validation, unique filename generation, and async file saving. Returns relative URL path (/uploads/filename)."
+
+  - task: "Static file serving for uploads"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Mounted /uploads directory as static files using FastAPI StaticFiles. Uploads directory created at /app/backend/uploads."
+
+frontend:
+  - task: "Banner image file upload UI"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/admin/AdminBanners.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Replaced URL input with file input, added image preview, uploading state, and proper image URL handling for both absolute and relative paths."
+
+  - task: "Dynamic banner display on homepage"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/Home.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Updated Home.js to fetch and display dynamic banners from API with fallback to static images. Properly handles relative and absolute image URLs."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Banner file upload endpoint"
+    - "Static file serving for uploads"
+    - "Banner image file upload UI"
+    - "Dynamic banner display on homepage"
+  stuck_tasks: []
+  test_all: true
+  test_priority: "sequential"
+
+agent_communication:
+  - agent: "main"
+    message: |
+      Completed banner image upload feature implementation:
+      
+      Backend Changes:
+      1. Added file upload endpoint at /api/admin/banners/upload
+      2. Implemented file type validation (JPG, PNG, GIF, WebP)
+      3. Generates unique filenames using UUID
+      4. Saves files asynchronously using aiofiles
+      5. Returns relative URL path for saved images
+      6. Mounted /uploads directory for static file serving
+      
+      Frontend Changes:
+      1. Replaced URL input with file input in AdminBanners.js
+      2. Added image preview functionality
+      3. Shows uploading state during file upload
+      4. Handles both absolute and relative image URLs
+      5. Updated Home.js to fetch dynamic banners from API
+      6. Implemented fallback to static images if no banners exist
+      
+      Testing Status:
+      - Visual confirmation: Admin panel modal shows file upload interface
+      - Need to test: File upload API, image display, and full banner creation flow
+      
+      Please test:
+      1. Upload banner image via admin panel
+      2. Verify image is saved to /app/backend/uploads/
+      3. Verify banner appears in admin banners list
+      4. Verify banner displays correctly on homepage
+      5. Test editing existing banner with new image
+      6. Test banner CRUD operations

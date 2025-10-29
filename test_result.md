@@ -137,6 +137,18 @@ backend:
         agent: "testing"
         comment: "✅ TESTED: Static file serving working correctly via backend (localhost:8001/uploads/). Minor: External URL routing through Kubernetes ingress returns HTML instead of image - this is an infrastructure configuration issue, not backend code issue."
 
+  - task: "Banner CRUD with uploaded images"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Complete banner CRUD flow working with uploaded images. Created banner with uploaded image URL, verified in admin list (/api/admin/banners), verified in public list (/api/banners), updated banner successfully, deleted banner successfully. All endpoints working correctly."
+
 frontend:
   - task: "Banner image file upload UI"
     implemented: true

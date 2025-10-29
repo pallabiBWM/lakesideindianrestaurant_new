@@ -8,7 +8,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const Cart = () => {
-  const { cart, removeFromCart, clearCart } = useCart();
+  const { cart, removeFromCart, clearCart, updateQuantity } = useCart();
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
 

@@ -135,7 +135,7 @@ CORS_ORIGINS=*
 
 ### Frontend (.env)
 ```
-REACT_APP_BACKEND_URL=https://spice-harbor-1.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://lakeside-menu-app.preview.emergentagent.com
 WDS_SOCKET_PORT=443
 REACT_APP_ENABLE_VISUAL_EDITS=true
 ENABLE_HEALTH_CHECK=false

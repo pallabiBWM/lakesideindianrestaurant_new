@@ -6,9 +6,12 @@ const CartContext = createContext();
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Generate a simple user ID for demo purposes
-const USER_ID = 'demo-user-' + (localStorage.getItem('userId') || Date.now());
-localStorage.setItem('userId', USER_ID);
+// Generate a simple user ID for demo purposes - ensure consistency
+let USER_ID = localStorage.getItem('userId');
+if (!USER_ID) {
+  USER_ID = 'demo-user-' + Date.now();
+  localStorage.setItem('userId', USER_ID);
+}
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState({ items: [] });

@@ -120,12 +120,34 @@ const AdminBanners = () => {
     e.preventDefault();
     
     try {
+      let imageUrl = formData.image;
+      
+      // Upload new image if selected
+      if (selectedFile) {
+        imageUrl = await handleUploadImage();
+        if (!imageUrl) {
+          alert('Failed to upload image');
+          return;
+        }
+      }
+      
+      // Ensure we have an image URL
+      if (!imageUrl) {
+        alert('Please select an image');
+        return;
+      }
+      
+      const submissionData = {
+        ...formData,
+        image: imageUrl
+      };
+      
       if (editingBanner) {
-        await axios.put(`${API}/admin/banners/${editingBanner.id}`, formData, {
+        await axios.put(`${API}/admin/banners/${editingBanner.id}`, submissionData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       } else {
-        await axios.post(`${API}/admin/banners`, formData, {
+        await axios.post(`${API}/admin/banners`, submissionData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }

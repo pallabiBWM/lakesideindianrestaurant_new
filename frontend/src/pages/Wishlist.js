@@ -76,24 +76,21 @@ const Wishlist = () => {
                 className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
                 data-testid={`wishlist-item-${item.id}`}
               >
-                <div className="relative">
-                  <img src={item.image} alt={item.name} className="w-full h-48 object-cover" />
-                  <button
-                    onClick={() => removeFromWishlist(item.id)}
-                    className="absolute top-2 right-2 bg-white rounded-full p-2 hover:bg-gray-100 transition-colors"
-                    data-testid={`remove-wishlist-${item.id}`}
-                  >
-                    <Trash2 className="w-5 h-5 text-red-600" />
-                  </button>
-                </div>
                 <div className="p-6">
-                  <div className="mb-2">
+                  <div className="mb-2 flex items-center justify-between">
                     <span className="text-xs font-semibold text-red-600 bg-red-50 px-2 py-1 rounded">
                       {item.category}
                     </span>
+                    <button
+                      onClick={() => removeFromWishlist(item.id)}
+                      className="text-red-600 hover:bg-red-50 rounded p-2 transition-colors"
+                      data-testid={`remove-wishlist-${item.id}`}
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
                   </div>
                   <h3 className="text-xl font-bold mb-2">{item.name}</h3>
-                  <p className="text-gray-600 mb-4 text-sm line-clamp-2">{item.description}</p>
+                  <p className="text-gray-600 mb-4 text-sm">{item.description}</p>
                   <div className="flex items-center justify-between">
                     <p className="text-2xl font-bold text-red-600">${item.price.toFixed(2)}</p>
                     <button

@@ -48,26 +48,6 @@ const Cart = () => {
     return menuItems.reduce((total, item) => total + calculateSubtotal(item), 0);
   };
 
-  const updateQuantity = async (itemId, newQuantity) => {
-    if (newQuantity < 1) return;
-    
-    try {
-      // Remove the item first
-      await axios.delete(`${API}/cart/${USER_ID}/remove/${itemId}`);
-      
-      // Add it back with new quantity
-      if (newQuantity > 0) {
-        await axios.post(`${API}/cart/${USER_ID}/add`, {
-          menu_item_id: itemId,
-          quantity: newQuantity
-        });
-      }
-      await fetchCart();
-    } catch (error) {
-      console.error('Error updating quantity:', error);
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">

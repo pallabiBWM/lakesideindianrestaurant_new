@@ -695,9 +695,8 @@ async def upload_banner_image(file: UploadFile = File(...), username: str = Depe
             content = await file.read()
             await f.write(content)
         
-        # Get backend URL from environment
-        backend_url = os.environ.get('BACKEND_URL', 'http://localhost:8001')
-        image_url = f"{backend_url}/uploads/{unique_filename}"
+        # Return relative URL path
+        image_url = f"/uploads/{unique_filename}"
         
         return {
             "url": image_url,

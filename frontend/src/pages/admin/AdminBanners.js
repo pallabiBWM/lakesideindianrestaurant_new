@@ -60,7 +60,9 @@ const AdminBanners = () => {
   const handleEdit = (banner) => {
     setEditingBanner(banner);
     setSelectedFile(null);
-    setPreviewUrl(banner.image);
+    // Handle both absolute and relative URLs
+    const imageUrl = banner.image.startsWith('http') ? banner.image : `${BACKEND_URL}${banner.image}`;
+    setPreviewUrl(imageUrl);
     setFormData(banner);
     setShowModal(true);
   };

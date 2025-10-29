@@ -24,6 +24,7 @@ const Home = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
   useEffect(() => {
+    fetchBanners();
     fetchFeaturedItems();
     fetchTestimonials();
     fetchGalleryImages();

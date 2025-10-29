@@ -214,33 +214,62 @@ class BannerUploadTester:
             return
             
         try:
-            # Test accessing the uploaded file
-            file_url = f"https://lakeside-menu-app.preview.emergentagent.com{uploaded_file_info['url']}"
+            # Test accessing the uploaded file via backend directly (this should work)
+            backend_url = f"http://localhost:8001{uploaded_file_info['url']}"
             
-            response = requests.get(file_url, timeout=10)
+            response = requests.get(backend_url, timeout=10)
             
             if response.status_code == 200:
                 content_type = response.headers.get('content-type', '')
                 if 'image' in content_type:
                     self.log_result(
-                        "Static File Serving", 
+                        "Static File Serving (Backend)", 
                         True, 
-                        "Uploaded image accessible via static URL",
-                        {"url": file_url, "content_type": content_type, "size": len(response.content)}
+                        "Uploaded image accessible via backend static URL",
+                        {"url": backend_url, "content_type": content_type, "size": len(response.content)}
                     )
                 else:
                     self.log_result(
-                        "Static File Serving", 
+                        "Static File Serving (Backend)", 
                         False, 
                         f"File accessible but wrong content type: {content_type}",
-                        {"url": file_url}
+                        {"url": backend_url}
                     )
             else:
                 self.log_result(
-                    "Static File Serving", 
+                    "Static File Serving (Backend)", 
                     False, 
-                    f"Cannot access uploaded file: {response.status_code}",
-                    {"url": file_url, "response": response.text}
+                    f"Cannot access uploaded file via backend: {response.status_code}",
+                    {"url": backend_url, "response": response.text}
+                )
+            
+            # Test accessing via external URL (may have routing issues)
+            external_url = f"https://lakeside-menu-app.preview.emergentagent.com{uploaded_file_info['url']}"
+            
+            response = requests.get(external_url, timeout=10)
+            
+            if response.status_code == 200:
+                content_type = response.headers.get('content-type', '')
+                if 'image' in content_type:
+                    self.log_result(
+                        "Static File Serving (External)", 
+                        True, 
+                        "Uploaded image accessible via external URL",
+                        {"url": external_url, "content_type": content_type, "size": len(response.content)}
+                    )
+                else:
+                    self.log_result(
+                        "Static File Serving (External)", 
+                        False, 
+                        f"External URL routing issue - returns HTML instead of image (Kubernetes ingress configuration)",
+                        {"url": external_url, "content_type": content_type}
+                    )
+            else:
+                self.log_result(
+                    "Static File Serving (External)", 
+                    False, 
+                    f"Cannot access uploaded file via external URL: {response.status_code}",
+                    {"url": external_url}
                 )
                 
         except Exception as e:

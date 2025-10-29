@@ -67,8 +67,31 @@ export const CartProvider = ({ children }) => {
     return cart.items.reduce((sum, item) => sum + item.quantity, 0);
   };
 
+  const updateQuantity = async (menuItemId, newQuantity) => {
+    if (newQuantity < 1) return;
+    
+    setLoading(true);
+    try {
+      // Remove the item first
+      await axios.delete(`${API}/cart/${USER_ID}/remove/${menuItemId}`);
+      
+      // Add it back with new quantity if greater than 0
+      if (newQuantity > 0) {
+        await axios.post(`${API}/cart/${USER_ID}/add`, {
+          menu_item_id: menuItemId,
+          quantity: newQuantity
+        });
+      }
+      
+      await fetchCart();
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
+    setLoading(false);
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, getCartItemCount, loading }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, updateQuantity, getCartItemCount, loading }}>
       {children}
     </CartContext.Provider>
   );

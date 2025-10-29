@@ -108,31 +108,60 @@ const Home = () => {
     <div className="bg-white">
       {/* Carousel Banner Section */}
       <section className="relative h-[600px] overflow-hidden" data-testid="hero-carousel">
-        {carouselImages.map((img, index) => (
+        {(banners.length > 0 ? banners : carouselImages.map((img, idx) => ({ 
+          id: idx, 
+          image: img, 
+          title: 'Lakeside Indian Restaurant', 
+          description: 'Authentic Indian Cuisine by the Lakeside',
+          button_text: 'Reserve Table',
+          button_link: '/reservation'
+        }))).map((banner, index) => (
           <div
-            key={index}
+            key={banner.id || index}
             className={`absolute inset-0 transition-opacity duration-1000 ${
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <img src={img} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
+            <img 
+              src={banner.image.startsWith('http') ? banner.image : `${BACKEND_URL}${banner.image}`}
+              alt={banner.title} 
+              className="w-full h-full object-cover" 
+            />
             <div className="absolute inset-0 bg-black bg-opacity-50"></div>
           </div>
         ))}
 
         <div className="absolute inset-0 flex items-center justify-center text-center z-10">
           <div className="text-white px-4">
-            <h1 className="text-5xl md:text-7xl font-bold mb-4" data-testid="hero-title">
-              <span className="text-red-600">Lakeside</span> Indian Restaurant
-            </h1>
-            <p className="text-xl md:text-2xl mb-8">Authentic Indian Cuisine by the Lakeside</p>
-            <Link
-              to="/reservation"
-              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block"
-              data-testid="reserve-table-button"
-            >
-              Reserve Table
-            </Link>
+            {banners.length > 0 ? (
+              <>
+                <h1 className="text-5xl md:text-7xl font-bold mb-4" data-testid="hero-title">
+                  {banners[currentSlide]?.title}
+                </h1>
+                <p className="text-xl md:text-2xl mb-8">{banners[currentSlide]?.description}</p>
+                <Link
+                  to={banners[currentSlide]?.button_link || '/reservation'}
+                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block"
+                  data-testid="reserve-table-button"
+                >
+                  {banners[currentSlide]?.button_text}
+                </Link>
+              </>
+            ) : (
+              <>
+                <h1 className="text-5xl md:text-7xl font-bold mb-4" data-testid="hero-title">
+                  <span className="text-red-600">Lakeside</span> Indian Restaurant
+                </h1>
+                <p className="text-xl md:text-2xl mb-8">Authentic Indian Cuisine by the Lakeside</p>
+                <Link
+                  to="/reservation"
+                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block"
+                  data-testid="reserve-table-button"
+                >
+                  Reserve Table
+                </Link>
+              </>
+            )}
           </div>
         </div>
 

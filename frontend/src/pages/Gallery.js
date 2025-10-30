@@ -115,7 +115,12 @@ const Gallery = () => {
               <X className="w-10 h-10" />
             </button>
             <img
-              src={selectedImage.url.startsWith('http') ? selectedImage.url : `${BACKEND_URL}${selectedImage.url}?t=${Date.now()}`}
+              src={(() => {
+                if (selectedImage.url.startsWith('http')) return selectedImage.url;
+                if (selectedImage.url.startsWith('/api/')) return `${BACKEND_URL}${selectedImage.url}`;
+                if (selectedImage.url.startsWith('/uploads/')) return `${BACKEND_URL}/api${selectedImage.url}`;
+                return `${BACKEND_URL}${selectedImage.url}`;
+              })()}
               alt={selectedImage.title}
               className="max-w-full max-h-[80vh] object-contain rounded-lg"
               data-testid="lightbox-image"

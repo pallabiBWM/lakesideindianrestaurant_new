@@ -26,7 +26,9 @@ const AdminGallery = () => {
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get(`${API}/gallery`);
+      const response = await axios.get(`${API}/gallery`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setImages(response.data);
     } catch (error) {
       console.error('Error fetching images:', error);
@@ -35,8 +37,47 @@ const AdminGallery = () => {
   };
 
   const handleAdd = () => {
+    setSelectedFile(null);
+    setPreviewUrl('');
     setFormData({ url: '', title: '', description: '' });
     setShowModal(true);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUploadImage = async () => {
+    if (!selectedFile) return null;
+    
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      
+      const response = await axios.post(`${API}/admin/gallery/upload`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      
+      return response.data.url;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleDelete = async (id) => {

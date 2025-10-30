@@ -270,14 +270,14 @@ const Home = () => {
               className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block"
               data-testid="view-dinein-menu"
             >
-              View Dine-in Menu
+              View More
             </Link>
             <Link
               to="/menu/takeaway"
               className="bg-black hover:bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block"
               data-testid="view-takeaway-menu"
             >
-              View Takeaway Menu
+              Order Online
             </Link>
           </div>
         </div>

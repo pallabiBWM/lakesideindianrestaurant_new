@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAdminAuth } from '@/context/AdminAuthContext';
-import { LayoutDashboard, Menu as MenuIcon, MessageSquare, Calendar, Settings, Image, Star, LogOut } from 'lucide-react';
+import { LayoutDashboard, Menu as MenuIcon, MessageSquare, Calendar, Settings, Image, Star, LogOut, Package } from 'lucide-react';
 
 const LOGO_URL = 'https://customer-assets.emergentagent.com/job_spice-harbor-1/artifacts/j7td7vej_WhatsApp_Image_2025-10-21_at_11.56.02__1_-removebg-preview.png';
 

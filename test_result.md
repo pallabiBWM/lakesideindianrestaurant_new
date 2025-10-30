@@ -271,11 +271,10 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Complete checkout flow with customer details form"
+  current_focus: []
   stuck_tasks: []
   test_all: false
-  test_priority: "high_first"
+  test_priority: "sequential"
 
 agent_communication:
   - agent: "main"

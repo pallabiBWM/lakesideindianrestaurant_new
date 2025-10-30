@@ -285,6 +285,53 @@ const AdminSettings = () => {
             </div>
           </div>
 
+          {/* Statistics Section */}
+          <div className="border-t pt-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Statistics</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Happy Customers</label>
+                <input
+                  type="number"
+                  value={settings.happy_customers}
+                  onChange={(e) => handleChange('happy_customers', parseInt(e.target.value) || 0)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+                  min="0"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Dishes Served</label>
+                <input
+                  type="number"
+                  value={settings.dishes_served}
+                  onChange={(e) => handleChange('dishes_served', parseInt(e.target.value) || 0)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+                  min="0"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Years of Experience</label>
+                <input
+                  type="number"
+                  value={settings.years_experience}
+                  onChange={(e) => handleChange('years_experience', parseInt(e.target.value) || 0)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+                  min="0"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Team Members</label>
+                <input
+                  type="number"
+                  value={settings.team_members}
+                  onChange={(e) => handleChange('team_members', parseInt(e.target.value) || 0)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+                  min="0"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Save Button */}
           <div className="flex justify-end pt-6 border-t">
             <button

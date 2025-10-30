@@ -3,14 +3,36 @@ import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, Heart, Menu, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
+import axios from 'axios';
 
-const LOGO_URL = 'https://customer-assets.emergentagent.com/job_spice-harbor-1/artifacts/j7td7vej_WhatsApp_Image_2025-10-21_at_11.56.02__1_-removebg-preview.png';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+const DEFAULT_LOGO = 'https://customer-assets.emergentagent.com/job_spice-harbor-1/artifacts/j7td7vej_WhatsApp_Image_2025-10-21_at_11.56.02__1_-removebg-preview.png';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [headerLogo, setHeaderLogo] = useState(DEFAULT_LOGO);
   const location = useLocation();
   const { getCartItemCount } = useCart();
   const { wishlist } = useWishlist();
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const response = await axios.get(`${API}/settings`);
+      if (response.data.header_logo) {
+        const logoUrl = response.data.header_logo.startsWith('http') 
+          ? response.data.header_logo 
+          : `${BACKEND_URL}${response.data.header_logo.startsWith('/api/') ? response.data.header_logo : '/api' + response.data.header_logo}`;
+        setHeaderLogo(logoUrl);
+      }
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-black shadow-lg">
@@ -19,12 +41,12 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 
-              src={LOGO_URL} 
+              src={headerLogo} 
               alt="Lakeside Indian Restaurant" 
               className="h-16 w-auto"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60"%3E%3Ctext x="10" y="40" font-family="Arial" font-size="24" fill="%23DC2626" font-weight="bold"%3ELakeside%3C/text%3E%3C/svg%3E';
+                e.target.src = DEFAULT_LOGO;
               }}
             />
           </Link>

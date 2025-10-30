@@ -61,15 +61,17 @@ const Header = () => {
             <NavLink to="/reservation" active={location.pathname === '/reservation'}>Reservation</NavLink>
           </nav>
 
-          {/* Order Online Button */}
-          <div className="hidden lg:flex items-center">
-            <Link 
-              to="/menu/takeaway" 
-              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
-            >
-              Order Online
-            </Link>
-          </div>
+          {/* Order Online Button - Hidden on takeaway page */}
+          {location.pathname !== '/menu/takeaway' && (
+            <div className="hidden lg:flex items-center">
+              <Link 
+                to="/menu/takeaway" 
+                className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+              >
+                Order Online
+              </Link>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <button

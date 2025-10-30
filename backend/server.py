@@ -231,6 +231,46 @@ class BannerUpdate(BaseModel):
     active: Optional[bool] = None
 
 
+# Order Models
+class OrderItem(BaseModel):
+    menu_item_id: str
+    quantity: int
+
+class Order(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    order_id: str = Field(default_factory=lambda: f"ORD-{str(uuid.uuid4())[:8].upper()}")
+    customer_name: str
+    customer_email: EmailStr
+    customer_phone: str
+    delivery_address: str
+    items: List[OrderItem]
+    subtotal: float
+    tax: float
+    delivery_fee: float
+    total: float
+    payment_method: str
+    status: str = "Pending"  # Pending, Confirmed, Preparing, Out for Delivery, Delivered, Cancelled
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class OrderCreate(BaseModel):
+    customer_name: str
+    customer_email: EmailStr
+    customer_phone: str
+    delivery_address: str
+    items: List[OrderItem]
+    subtotal: float
+    tax: float
+    delivery_fee: float
+    total: float
+    payment_method: str
+    status: str = "Pending"
+
+class OrderUpdate(BaseModel):
+    status: Optional[str] = None
+
+
 # ============= ADMIN ROUTES =============
 
 @api_router.post("/admin/login")

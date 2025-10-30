@@ -232,12 +232,9 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Gallery image upload endpoint"
-    - "Gallery image file upload UI"
-    - "Gallery image display on public page"
+  current_focus: []
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "sequential"
 
 agent_communication:

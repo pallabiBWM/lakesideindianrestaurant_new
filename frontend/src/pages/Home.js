@@ -115,7 +115,20 @@ const Home = () => {
           description: 'Authentic Indian Cuisine by the Lakeside',
           button_text: 'Reserve Table',
           button_link: '/reservation'
-        }))).map((banner, index) => (
+        }))).map((banner, index) => {
+          // Handle different URL formats
+          let imageUrl;
+          if (banner.image.startsWith('http')) {
+            imageUrl = banner.image;
+          } else if (banner.image.startsWith('/api/')) {
+            imageUrl = `${BACKEND_URL}${banner.image}`;
+          } else if (banner.image.startsWith('/uploads/')) {
+            imageUrl = `${BACKEND_URL}/api${banner.image}`;
+          } else {
+            imageUrl = `${BACKEND_URL}${banner.image}`;
+          }
+          
+          return (
           <div
             key={banner.id || index}
             className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -123,13 +136,14 @@ const Home = () => {
             }`}
           >
             <img 
-              src={banner.image.startsWith('http') ? banner.image : `${BACKEND_URL}${banner.image}`}
+              src={imageUrl}
               alt={banner.title} 
               className="w-full h-full object-cover" 
             />
             <div className="absolute inset-0 bg-black bg-opacity-50"></div>
           </div>
-        ))}
+          );
+        })}
 
         <div className="absolute inset-0 flex items-center justify-center text-center z-10">
           <div className="text-white px-4">

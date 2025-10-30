@@ -193,15 +193,15 @@ const AdminGallery = () => {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Add Gallery Image</h2>
-                <button onClick={() => setShowModal(false)}>
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
+          <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] flex flex-col">
+            <div className="p-6 border-b flex justify-between items-center flex-shrink-0">
+              <h2 className="text-2xl font-bold">Add Gallery Image</h2>
+              <button onClick={() => setShowModal(false)}>
+                <X className="w-6 h-6" />
+              </button>
+            </div>
 
+            <div className="overflow-y-auto p-6">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-semibold mb-1">Gallery Image *</label>

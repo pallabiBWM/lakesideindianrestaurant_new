@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAdminAuth } from '@/context/AdminAuthContext';
 import axios from 'axios';
-import { Save, Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { Save, Mail, Phone, MapPin, Clock, Upload } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -13,6 +13,8 @@ const AdminSettings = () => {
     restaurant_name: '',
     restaurant_phone: '',
     restaurant_address: '',
+    header_logo: '',
+    footer_logo: '',
     opening_hours: {
       monday_thursday: '',
       friday_saturday: '',
@@ -21,6 +23,7 @@ const AdminSettings = () => {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState({ header: false, footer: false });
   const [message, setMessage] = useState('');
 
   useEffect(() => {

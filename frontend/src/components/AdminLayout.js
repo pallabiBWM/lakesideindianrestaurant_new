@@ -18,6 +18,7 @@ const AdminLayout = ({ children }) => {
     { path: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/admin/banners', icon: Image, label: 'Banners' },
     { path: '/admin/menu', icon: MenuIcon, label: 'Menu Items' },
+    { path: '/admin/orders', icon: Package, label: 'Orders' },
     { path: '/admin/contacts', icon: MessageSquare, label: 'Contacts' },
     { path: '/admin/reservations', icon: Calendar, label: 'Reservations' },
     { path: '/admin/testimonials', icon: Star, label: 'Testimonials' },

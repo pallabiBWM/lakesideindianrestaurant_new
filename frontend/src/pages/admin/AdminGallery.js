@@ -125,8 +125,18 @@ const AdminGallery = () => {
       await axios.post(`${API}/admin/gallery`, submissionData, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      
       setShowModal(false);
-      fetchImages();
+      
+      // Small delay to ensure database is updated
+      setTimeout(() => {
+        fetchImages();
+      }, 500);
+      
+      // Reset form
+      setSelectedFile(null);
+      setPreviewUrl('');
+      
     } catch (error) {
       console.error('Error adding image:', error);
       alert('Failed to add image');

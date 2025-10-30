@@ -750,8 +750,8 @@ async def upload_banner_image(file: UploadFile = File(...), username: str = Depe
             content = await file.read()
             await f.write(content)
         
-        # Return relative URL path
-        image_url = f"/uploads/{unique_filename}"
+        # Return API endpoint URL instead of static file URL
+        image_url = f"/api/uploads/{unique_filename}"
         
         return {
             "url": image_url,

@@ -58,7 +58,9 @@ const Home = () => {
 
   const fetchFeaturedItems = async () => {
     try {
-      const response = await axios.get(`${API}/menu?featured=true`);
+      // Fetch dine-in menu items
+      const response = await axios.get(`${API}/menu?menu_type=dine-in`);
+      // Get first 6 items from dine-in menu
       setFeaturedItems(response.data.slice(0, 6));
     } catch (error) {
       console.error('Error fetching featured items:', error);

@@ -118,21 +118,10 @@ const DineInMenu = () => {
                 data-testid={`menu-item-${item.id}`}
               >
                 <div className="p-6">
-                  <div className="mb-2 flex items-center justify-between">
+                  <div className="mb-2">
                     <span className="text-xs font-semibold text-red-600 bg-red-50 px-2 py-1 rounded">
                       {item.category}
                     </span>
-                    <button
-                      onClick={() => handleWishlistToggle(item.id)}
-                      className="text-gray-400 hover:text-red-600 transition-colors"
-                      data-testid={`wishlist-toggle-${item.id}`}
-                    >
-                      <Heart
-                        className={`w-5 h-5 ${
-                          isInWishlist(item.id) ? 'fill-red-600 text-red-600' : ''
-                        }`}
-                      />
-                    </button>
                   </div>
                   <h3 className="text-xl font-bold mb-2">{item.name}</h3>
                   <p className="text-gray-600 mb-4 text-sm">{item.description}</p>

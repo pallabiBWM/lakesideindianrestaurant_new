@@ -88,7 +88,7 @@ class MenuItemCreate(BaseModel):
     price: float
     category: str
     menu_type: str
-    image: str
+    image: Optional[str] = ""
     featured: bool = False
 
 class MenuItemUpdate(BaseModel):

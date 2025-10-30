@@ -333,13 +333,17 @@ async def get_public_settings():
             "restaurant_name": "Lakeside Indian Restaurant",
             "restaurant_phone": "+1 (555) 123-4567",
             "restaurant_address": "123 Lakeside Drive, Waterfront District, City Name, State 12345",
-            "admin_email": "pallabi.dipa@gmail.com"
+            "admin_email": "pallabi.dipa@gmail.com",
+            "header_logo": "",
+            "footer_logo": ""
         }
     return {
         "restaurant_name": settings.get("restaurant_name"),
         "restaurant_phone": settings.get("restaurant_phone"),
         "restaurant_address": settings.get("restaurant_address"),
-        "admin_email": settings.get("admin_email")
+        "admin_email": settings.get("admin_email"),
+        "header_logo": settings.get("header_logo", ""),
+        "footer_logo": settings.get("footer_logo", "")
     }
 
 # Menu Routes (Public)

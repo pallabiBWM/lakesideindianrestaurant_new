@@ -153,30 +153,33 @@ const AdminGallery = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {images.map((image) => (
-          <div key={image.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <img 
-              src={image.url.startsWith('http') ? image.url : `${BACKEND_URL}${image.url}?t=${Date.now()}`}
-              alt={image.title} 
-              className="w-full h-48 object-cover" 
-              onError={(e) => {
-                console.error('Image failed to load:', image.url);
-                e.target.style.display = 'none';
-              }}
-            />
-            <div className="p-4">
-              <h3 className="font-semibold text-lg mb-1">{image.title}</h3>
-              <p className="text-sm text-gray-600 mb-3">{image.description}</p>
-              <button
-                onClick={() => handleDelete(image.id)}
-                className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center justify-center space-x-2"
-              >
-                <Trash2 className="w-4 h-4" />
-                <span>Delete</span>
-              </button>
+        {images.map((image) => {
+          const imageUrl = image.url.startsWith('http') ? image.url : `${BACKEND_URL}${image.url}`;
+          console.log('Gallery image URL:', imageUrl, 'Original:', image.url);
+          return (
+            <div key={image.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <img 
+                src={imageUrl}
+                alt={image.title} 
+                className="w-full h-48 object-cover" 
+                onError={(e) => {
+                  console.error('Image failed to load:', imageUrl);
+                }}
+              />
+              <div className="p-4">
+                <h3 className="font-semibold text-lg mb-1">{image.title}</h3>
+                <p className="text-sm text-gray-600 mb-3">{image.description}</p>
+                <button
+                  onClick={() => handleDelete(image.id)}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center justify-center space-x-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span>Delete</span>
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Modal */}

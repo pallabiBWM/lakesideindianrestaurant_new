@@ -249,6 +249,18 @@ frontend:
         agent: "testing"
         comment: "✅ TESTED: Complete Continue Shopping button flow working perfectly. Successfully tested 9-step flow: Navigate to takeaway menu → Add item to cart (Veg Samosa $9.99) → Navigate to cart → Verify cart contents → Locate Continue Shopping button in Order Summary → Verify href='/menu/takeaway' → Click button → Navigate back to takeaway menu → Verify menu loads with all 125 items. Cart count preserved (1 item), URL routing correct, no console errors. Button positioned correctly in Order Summary section with proper styling and functionality. All test scenarios passed with 100% success rate."
 
+  - task: "Complete checkout flow with customer details form"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Checkout.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "TESTING IN PROGRESS: Complete checkout flow from takeaway menu → add items → cart → checkout form → order placement → success page. Testing all form fields (Name, Email, Phone, Address), order summary display, Cash on Delivery payment method, form validation, order submission, and success page with order details."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"

@@ -606,6 +606,39 @@ async def delete_gallery_image(image_id: str, username: str = Depends(verify_tok
     
     return {"message": "Gallery image deleted successfully"}
 
+@api_router.post("/admin/gallery/upload")
+async def upload_gallery_image(file: UploadFile = File(...), username: str = Depends(verify_token)):
+    """Upload a gallery image and return the URL"""
+    try:
+        # Validate file type
+        allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
+        if file.content_type not in allowed_types:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Invalid file type. Allowed types: {', '.join(allowed_types)}"
+            )
+        
+        # Generate unique filename
+        file_extension = file.filename.split('.')[-1]
+        unique_filename = f"{uuid.uuid4()}.{file_extension}"
+        file_path = UPLOADS_DIR / unique_filename
+        
+        # Save file
+        async with aiofiles.open(file_path, 'wb') as f:
+            content = await file.read()
+            await f.write(content)
+        
+        # Return relative URL path
+        image_url = f"/uploads/{unique_filename}"
+        
+        return {
+            "url": image_url,
+            "filename": unique_filename
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error uploading file: {str(e)}")
+
 # Statistics Route
 @api_router.get("/statistics")
 async def get_statistics():

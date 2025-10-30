@@ -63,6 +63,8 @@ class AdminSettings(BaseModel):
     restaurant_phone: str
     restaurant_address: str
     opening_hours: dict
+    header_logo: Optional[str] = ""
+    footer_logo: Optional[str] = ""
     smtp_host: Optional[str] = None
     smtp_port: Optional[int] = None
     smtp_user: Optional[str] = None

@@ -713,6 +713,14 @@ async def serve_uploaded_file(filename: str):
 # Statistics Route
 @api_router.get("/statistics")
 async def get_statistics():
+    settings = await db.admin_settings.find_one({"id": "settings"}, {"_id": 0})
+    if settings:
+        return {
+            "happy_customers": settings.get("happy_customers", 5000),
+            "dishes_served": settings.get("dishes_served", 25000),
+            "years_experience": settings.get("years_experience", 15),
+            "team_members": settings.get("team_members", 30)
+        }
     return {
         "happy_customers": 5000,
         "dishes_served": 25000,

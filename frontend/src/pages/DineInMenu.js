@@ -138,14 +138,6 @@ const DineInMenu = () => {
                   <p className="text-gray-600 mb-4 text-sm">{item.description}</p>
                   <div className="flex items-center justify-between">
                     <p className="text-2xl font-bold text-red-600">${item.price.toFixed(2)}</p>
-                    <button
-                      onClick={() => handleAddToCart(item.id)}
-                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
-                      data-testid={`add-to-cart-${item.id}`}
-                    >
-                      <ShoppingCart className="w-4 h-4" />
-                      <span>Add</span>
-                    </button>
                   </div>
                 </div>
               </div>

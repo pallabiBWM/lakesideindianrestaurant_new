@@ -126,16 +126,9 @@ const AdminGallery = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      setShowModal(false);
-      
-      // Small delay to ensure database is updated
-      setTimeout(() => {
-        fetchImages();
-      }, 500);
-      
-      // Reset form
-      setSelectedFile(null);
-      setPreviewUrl('');
+      // Success message and reload page to show new image
+      alert('Gallery image added successfully!');
+      window.location.reload();
       
     } catch (error) {
       console.error('Error adding image:', error);

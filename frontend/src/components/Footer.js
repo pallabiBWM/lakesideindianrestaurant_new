@@ -70,6 +70,17 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 pt-6 text-center text-gray-400">
           <p>&copy; {new Date().getFullYear()} Lakeside Indian Restaurant. All rights reserved.</p>
+          <p className="mt-2 text-sm">
+            Designed and Developed by{' '}
+            <a 
+              href="https://www.businesswebmedia.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-red-600 hover:text-red-500 transition-colors"
+            >
+              Business Web Media
+            </a>
+          </p>
         </div>
       </div>
     </footer>

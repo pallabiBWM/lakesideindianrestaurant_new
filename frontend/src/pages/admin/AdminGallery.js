@@ -156,9 +156,13 @@ const AdminGallery = () => {
         {images.map((image) => (
           <div key={image.id} className="bg-white rounded-lg shadow-md overflow-hidden">
             <img 
-              src={image.url.startsWith('http') ? image.url : `${BACKEND_URL}${image.url}`}
+              src={image.url.startsWith('http') ? image.url : `${BACKEND_URL}${image.url}?t=${Date.now()}`}
               alt={image.title} 
               className="w-full h-48 object-cover" 
+              onError={(e) => {
+                console.error('Image failed to load:', image.url);
+                e.target.style.display = 'none';
+              }}
             />
             <div className="p-4">
               <h3 className="font-semibold text-lg mb-1">{image.title}</h3>

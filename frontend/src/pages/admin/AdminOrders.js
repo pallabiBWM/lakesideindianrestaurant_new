@@ -31,7 +31,7 @@ const AdminOrders = () => {
 
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-      const token = localStorage.getItem('admin_token');
+      const token = localStorage.getItem('adminToken');
       await axios.patch(
         `${API}/orders/${orderId}`,
         { status: newStatus },

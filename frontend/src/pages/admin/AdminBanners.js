@@ -177,13 +177,26 @@ const AdminBanners = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        {banners.map((banner) => (
+        {banners.map((banner) => {
+          // Handle different URL formats
+          let imageUrl;
+          if (banner.image.startsWith('http')) {
+            imageUrl = banner.image;
+          } else if (banner.image.startsWith('/api/')) {
+            imageUrl = `${BACKEND_URL}${banner.image}`;
+          } else if (banner.image.startsWith('/uploads/')) {
+            imageUrl = `${BACKEND_URL}/api${banner.image}`;
+          } else {
+            imageUrl = `${BACKEND_URL}${banner.image}`;
+          }
+          
+          return (
           <div key={banner.id} className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
               {/* Banner Image */}
               <div className="relative">
                 <img 
-                  src={banner.image.startsWith('http') ? banner.image : `${BACKEND_URL}${banner.image}`}
+                  src={imageUrl}
                   alt={banner.title} 
                   className="w-full h-48 object-cover rounded-lg"
                 />

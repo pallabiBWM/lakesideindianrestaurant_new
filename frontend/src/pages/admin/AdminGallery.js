@@ -98,7 +98,29 @@ const AdminGallery = () => {
     e.preventDefault();
     
     try {
-      await axios.post(`${API}/admin/gallery`, formData, {
+      let imageUrl = formData.url;
+      
+      // Upload new image if selected
+      if (selectedFile) {
+        imageUrl = await handleUploadImage();
+        if (!imageUrl) {
+          alert('Failed to upload image');
+          return;
+        }
+      }
+      
+      // Ensure we have an image URL
+      if (!imageUrl) {
+        alert('Please select an image');
+        return;
+      }
+      
+      const submissionData = {
+        ...formData,
+        url: imageUrl
+      };
+      
+      await axios.post(`${API}/admin/gallery`, submissionData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setShowModal(false);

@@ -69,6 +69,10 @@ class AdminSettings(BaseModel):
     smtp_port: Optional[int] = None
     smtp_user: Optional[str] = None
     smtp_password: Optional[str] = None
+    happy_customers: Optional[int] = 5000
+    dishes_served: Optional[int] = 25000
+    years_experience: Optional[int] = 15
+    team_members: Optional[int] = 30
 
 # Menu Item Models
 class MenuItem(BaseModel):

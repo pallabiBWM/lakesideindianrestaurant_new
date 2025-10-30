@@ -13,8 +13,8 @@ const TakeawayMenu = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(true);
-  const { addToCart } = useCart();
-  const { addToWishlist, isInWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart, getCartItemCount } = useCart();
+  const { addToWishlist, isInWishlist, removeFromWishlist, wishlist } = useWishlist();
 
   useEffect(() => {
     fetchMenuItems();

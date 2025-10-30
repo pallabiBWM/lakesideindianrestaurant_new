@@ -79,30 +79,10 @@ const TakeawayMenu = () => {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-4" data-testid="takeaway-menu-title">
-              Takeaway <span className="text-red-600">Menu</span>
+              Order <span className="text-red-600">Online</span>
             </h1>
             <p className="text-xl text-white">Order your favorite dishes to enjoy at home</p>
           </div>
-        </div>
-        
-        {/* Cart & Wishlist Icons - Top Right */}
-        <div className="absolute top-8 right-8 flex items-center space-x-6 z-50">
-          <Link to="/wishlist" className="relative text-white hover:text-red-600 transition-colors">
-            <Heart className="w-8 h-8" />
-            {wishlist.menu_item_ids.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
-                {wishlist.menu_item_ids.length}
-              </span>
-            )}
-          </Link>
-          <Link to="/cart" className="relative text-white hover:text-red-600 transition-colors">
-            <ShoppingCart className="w-8 h-8" />
-            {getCartItemCount() > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
-                {getCartItemCount()}
-              </span>
-            )}
-          </Link>
         </div>
       </section>
 

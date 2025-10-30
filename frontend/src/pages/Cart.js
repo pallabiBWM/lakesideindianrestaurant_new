@@ -169,7 +169,7 @@ const Cart = () => {
                     Payment integration coming soon!
                   </p>
                   <Link
-                    to="/menu"
+                    to="/takeaway-menu"
                     className="block w-full text-center border-2 border-red-600 text-red-600 hover:bg-red-50 px-6 py-3 rounded-lg font-semibold transition-colors"
                     data-testid="continue-shopping-link"
                   >

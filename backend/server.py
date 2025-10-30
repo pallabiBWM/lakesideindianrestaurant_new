@@ -78,7 +78,7 @@ class MenuItem(BaseModel):
     price: float
     category: str
     menu_type: str  # 'dine-in' or 'takeaway'
-    image: str
+    image: Optional[str] = ""
     featured: bool = False
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 

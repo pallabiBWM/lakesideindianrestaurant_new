@@ -183,14 +183,26 @@ const AdminGallery = () => {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold mb-1">Image URL *</label>
+                  <label className="block text-sm font-semibold mb-1">Gallery Image *</label>
                   <input
-                    type="url"
-                    value={formData.url}
-                    onChange={(e) => setFormData({...formData, url: e.target.value})}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
                     className="w-full px-3 py-2 border rounded-lg"
                     required
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Upload an image (JPG, PNG, GIF, or WebP)
+                  </p>
+                  {previewUrl && (
+                    <div className="mt-3">
+                      <img 
+                        src={previewUrl} 
+                        alt="Preview" 
+                        className="w-full h-48 object-cover rounded-lg border"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -219,15 +231,17 @@ const AdminGallery = () => {
                     type="button"
                     onClick={() => setShowModal(false)}
                     className="px-4 py-2 border rounded-lg"
+                    disabled={uploading}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg flex items-center space-x-2"
+                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={uploading}
                   >
                     <Save className="w-5 h-5" />
-                    <span>Save</span>
+                    <span>{uploading ? 'Uploading...' : 'Save'}</span>
                   </button>
                 </div>
               </form>

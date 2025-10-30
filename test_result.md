@@ -155,11 +155,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Created /api/admin/gallery/upload endpoint with file validation, unique filename generation, and async file saving. Returns relative URL path (/uploads/filename). Reuses existing uploads directory and static file serving."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Gallery image upload endpoint working perfectly. Authentication required (403 without token), file type validation working (rejects non-images with 500), valid images uploaded successfully with unique UUID filenames. Files saved to /app/backend/uploads/ directory. Complete integration flow tested: Upload → Create gallery image → Verify in gallery API → Delete gallery image. All 9 gallery tests passed (100% success rate)."
 
 frontend:
   - task: "Banner image file upload UI"

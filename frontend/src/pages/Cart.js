@@ -9,6 +9,7 @@ const API = `${BACKEND_URL}/api`;
 
 const Cart = () => {
   const { cart, removeFromCart, clearCart, updateQuantity } = useCart();
+  const navigate = useNavigate();
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
 

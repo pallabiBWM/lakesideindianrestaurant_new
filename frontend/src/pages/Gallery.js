@@ -69,7 +69,7 @@ const Gallery = () => {
                 data-testid={`gallery-image-${image.id}`}
               >
                 <img
-                  src={image.url}
+                  src={image.url.startsWith('http') ? image.url : `${BACKEND_URL}${image.url}`}
                   alt={image.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />

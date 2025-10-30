@@ -61,8 +61,29 @@ const Header = () => {
             <NavLink to="/reservation" active={location.pathname === '/reservation'}>Reservation</NavLink>
           </nav>
 
-          {/* Order Online Button - Hidden on takeaway page */}
-          {location.pathname !== '/menu/takeaway' && (
+          {/* Order Online Button OR Cart & Wishlist Icons */}
+          {location.pathname === '/menu/takeaway' ? (
+            // Show Cart & Wishlist on Order Online page
+            <div className="hidden lg:flex items-center space-x-6">
+              <Link to="/wishlist" className="relative text-white hover:text-red-600 transition-colors" data-testid="wishlist-icon">
+                <Heart className="w-6 h-6" />
+                {wishlist.menu_item_ids.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" data-testid="wishlist-count">
+                    {wishlist.menu_item_ids.length}
+                  </span>
+                )}
+              </Link>
+              <Link to="/cart" className="relative text-white hover:text-red-600 transition-colors" data-testid="cart-icon">
+                <ShoppingCart className="w-6 h-6" />
+                {getCartItemCount() > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" data-testid="cart-count">
+                    {getCartItemCount()}
+                  </span>
+                )}
+              </Link>
+            </div>
+          ) : (
+            // Show Order Online button on other pages
             <div className="hidden lg:flex items-center">
               <Link 
                 to="/menu/takeaway" 

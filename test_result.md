@@ -212,15 +212,18 @@ frontend:
 
   - task: "Gallery image display on public page"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/frontend/src/pages/Gallery.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Updated Gallery.js to properly handle both absolute and relative image URLs for uploaded gallery images. Updated both grid view and lightbox modal."
+      - working: "NA"
+        agent: "testing"
+        comment: "Frontend UI testing not performed as per system limitations. Backend API confirmed working - GET /api/gallery returns 6 existing gallery images successfully, and newly uploaded images are properly added/removed from the gallery."
 
 metadata:
   created_by: "main_agent"

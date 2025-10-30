@@ -115,7 +115,20 @@ const Header = () => {
               <MobileNavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</MobileNavLink>
               <MobileNavLink to="/reservation" onClick={() => setIsMobileMenuOpen(false)}>Reservation</MobileNavLink>
               
-              {location.pathname !== '/menu/takeaway' && (
+              {location.pathname === '/menu/takeaway' ? (
+                // Show Cart & Wishlist on Order Online page
+                <div className="flex space-x-6 pt-4">
+                  <Link to="/wishlist" className="flex items-center text-white hover:text-red-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Heart className="w-5 h-5 mr-2" />
+                    Wishlist ({wishlist.menu_item_ids.length})
+                  </Link>
+                  <Link to="/cart" className="flex items-center text-white hover:text-red-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                    <ShoppingCart className="w-5 h-5 mr-2" />
+                    Cart ({getCartItemCount()})
+                  </Link>
+                </div>
+              ) : (
+                // Show Order Online button on other pages
                 <Link 
                   to="/menu/takeaway" 
                   className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors text-center mt-4"

@@ -87,22 +87,22 @@ const TakeawayMenu = () => {
         
         {/* Cart & Wishlist Icons - Top Right */}
         <div className="absolute top-8 right-8 flex items-center space-x-6 z-50">
-          <a href="/wishlist" className="relative text-white hover:text-red-600 transition-colors">
+          <Link to="/wishlist" className="relative text-white hover:text-red-600 transition-colors">
             <Heart className="w-8 h-8" />
-            {useWishlist().wishlist.menu_item_ids.length > 0 && (
+            {wishlist.menu_item_ids.length > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
-                {useWishlist().wishlist.menu_item_ids.length}
+                {wishlist.menu_item_ids.length}
               </span>
             )}
-          </a>
-          <a href="/cart" className="relative text-white hover:text-red-600 transition-colors">
+          </Link>
+          <Link to="/cart" className="relative text-white hover:text-red-600 transition-colors">
             <ShoppingCart className="w-8 h-8" />
-            {useCart().getCartItemCount() > 0 && (
+            {getCartItemCount() > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
-                {useCart().getCartItemCount()}
+                {getCartItemCount()}
               </span>
             )}
-          </a>
+          </Link>
         </div>
       </section>
 

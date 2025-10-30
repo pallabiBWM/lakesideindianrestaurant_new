@@ -279,6 +279,45 @@ async def update_admin_settings(settings: AdminSettings, username: str = Depends
     )
     return {"message": "Settings updated successfully"}
 
+@api_router.post("/admin/settings/upload-logo")
+async def upload_logo(file: UploadFile = File(...), logo_type: str = "header", username: str = Depends(verify_token)):
+    """Upload header or footer logo"""
+    try:
+        # Validate file type
+        allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp", "image/svg+xml"]
+        if file.content_type not in allowed_types:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Invalid file type. Allowed types: {', '.join(allowed_types)}"
+            )
+        
+        # Validate logo_type
+        if logo_type not in ["header", "footer"]:
+            raise HTTPException(status_code=400, detail="logo_type must be 'header' or 'footer'")
+        
+        # Generate unique filename
+        file_extension = file.filename.split('.')[-1]
+        unique_filename = f"logo_{logo_type}_{uuid.uuid4()}.{file_extension}"
+        file_path = UPLOADS_DIR / unique_filename
+        
+        # Save file
+        async with aiofiles.open(file_path, 'wb') as f:
+            content = await file.read()
+            await f.write(content)
+        
+        # Return API endpoint URL
+        logo_url = f"/api/uploads/{unique_filename}"
+        
+        return {
+            "url": logo_url,
+            "filename": unique_filename,
+            "logo_type": logo_type
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error uploading logo: {str(e)}")
+
+
 # ============= PUBLIC ROUTES =============
 
 @api_router.get("/")

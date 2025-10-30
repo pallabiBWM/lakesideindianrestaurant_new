@@ -50,18 +50,22 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div>
+          {/* Quick Links - Split into 2 columns */}
+          <div className="md:col-span-2">
             <h4 className="text-xl font-bold mb-4 text-red-600">Quick Links</h4>
-            <ul className="space-y-2">
-              <li><Link to="/" className="text-gray-400 hover:text-red-600 transition-colors">Home</Link></li>
-              <li><Link to="/about" className="text-gray-400 hover:text-red-600 transition-colors">About Us</Link></li>
-              <li><Link to="/menu/dine-in" className="text-gray-400 hover:text-red-600 transition-colors">Dine-in Menu</Link></li>
-              <li><Link to="/menu/takeaway" className="text-gray-400 hover:text-red-600 transition-colors">Takeaway Menu</Link></li>
-              <li><Link to="/gallery" className="text-gray-400 hover:text-red-600 transition-colors">Gallery</Link></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-red-600 transition-colors">Contact Us</Link></li>
-              <li><Link to="/reservation" className="text-gray-400 hover:text-red-600 transition-colors">Reservation</Link></li>
-            </ul>
+            <div className="grid grid-cols-2 gap-8">
+              <ul className="space-y-2">
+                <li><Link to="/" className="text-gray-400 hover:text-red-600 transition-colors">Home</Link></li>
+                <li><Link to="/about" className="text-gray-400 hover:text-red-600 transition-colors">About Us</Link></li>
+                <li><Link to="/menu/dine-in" className="text-gray-400 hover:text-red-600 transition-colors">Dine-in Menu</Link></li>
+                <li><Link to="/menu/takeaway" className="text-gray-400 hover:text-red-600 transition-colors">Takeaway Menu</Link></li>
+              </ul>
+              <ul className="space-y-2">
+                <li><Link to="/gallery" className="text-gray-400 hover:text-red-600 transition-colors">Gallery</Link></li>
+                <li><Link to="/contact" className="text-gray-400 hover:text-red-600 transition-colors">Contact Us</Link></li>
+                <li><Link to="/reservation" className="text-gray-400 hover:text-red-600 transition-colors">Reservation</Link></li>
+              </ul>
+            </div>
           </div>
 
           {/* Contact Info */}

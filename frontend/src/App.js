@@ -23,6 +23,7 @@ import AdminBanners from '@/pages/admin/AdminBanners';
 import AdminMenu from '@/pages/admin/AdminMenu';
 import AdminContacts from '@/pages/admin/AdminContacts';
 import AdminReservations from '@/pages/admin/AdminReservations';
+import AdminOrders from '@/pages/admin/AdminOrders';
 import AdminTestimonials from '@/pages/admin/AdminTestimonials';
 import AdminGallery from '@/pages/admin/AdminGallery';
 import AdminSettings from '@/pages/admin/AdminSettings';

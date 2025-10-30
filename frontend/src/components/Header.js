@@ -115,8 +115,8 @@ const Header = () => {
               <MobileNavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</MobileNavLink>
               <MobileNavLink to="/reservation" onClick={() => setIsMobileMenuOpen(false)}>Reservation</MobileNavLink>
               
-              {location.pathname === '/menu/takeaway' ? (
-                // Show Cart & Wishlist on Order Online page
+              {(location.pathname === '/menu/takeaway' || location.pathname === '/cart' || location.pathname === '/wishlist') ? (
+                // Show Cart & Wishlist on Order Online, Cart, and Wishlist pages
                 <div className="flex space-x-6 pt-4">
                   <Link to="/wishlist" className="flex items-center text-white hover:text-red-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
                     <Heart className="w-5 h-5 mr-2" />

@@ -21,8 +21,10 @@ const AdminGallery = () => {
   });
 
   useEffect(() => {
-    fetchImages();
-  }, []);
+    if (token) {
+      fetchImages();
+    }
+  }, [token]);
 
   const fetchImages = async () => {
     try {

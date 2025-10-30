@@ -903,11 +903,34 @@ class BannerUploadTester:
         }
 
 if __name__ == "__main__":
-    tester = BannerUploadTester()
-    summary = tester.run_all_tests()
+    print("🏛️ LAKESIDE INDIAN RESTAURANT - BACKEND API TESTING")
+    print("="*60)
+    
+    # Run Gallery Upload Tests (Primary Focus)
+    print("\n🖼️  GALLERY IMAGE UPLOAD TESTS")
+    gallery_tester = GalleryUploadTester()
+    gallery_summary = gallery_tester.run_all_tests()
+    
+    # Run Banner Upload Tests (For Regression)
+    print("\n🎯 BANNER IMAGE UPLOAD TESTS (Regression)")
+    banner_tester = BannerUploadTester()
+    banner_summary = banner_tester.run_all_tests()
+    
+    # Combined Summary
+    total_tests = gallery_summary["total"] + banner_summary["total"]
+    total_passed = gallery_summary["passed"] + banner_summary["passed"]
+    total_failed = gallery_summary["failed"] + banner_summary["failed"]
+    
+    print("\n" + "="*60)
+    print("🎯 OVERALL TEST SUMMARY")
+    print("="*60)
+    print(f"Gallery Tests: {gallery_summary['passed']}/{gallery_summary['total']} passed")
+    print(f"Banner Tests: {banner_summary['passed']}/{banner_summary['total']} passed")
+    print(f"Total: {total_passed}/{total_tests} passed ({(total_passed/total_tests*100):.1f}%)")
     
     # Exit with error code if tests failed
-    if summary["failed"] > 0:
+    if total_failed > 0:
+        print(f"\n❌ {total_failed} tests failed")
         exit(1)
     else:
         print("\n🎉 All tests passed!")

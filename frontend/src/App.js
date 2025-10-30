@@ -10,6 +10,7 @@ import Contact from '@/pages/Contact';
 import Reservation from '@/pages/Reservation';
 import Cart from '@/pages/Cart';
 import Wishlist from '@/pages/Wishlist';
+import Checkout from '@/pages/Checkout';
 import Layout from '@/components/Layout';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';

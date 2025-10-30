@@ -380,7 +380,7 @@ const Home = () => {
 const StatCard = ({ number, label }) => (
   <div className="p-6">
     <div className="text-5xl font-bold text-red-600 mb-2">{number.toLocaleString()}+</div>
-    <div className="text-lg">{label}</div>
+    <div className="text-lg text-white font-bold">{label}</div>
   </div>
 );
 

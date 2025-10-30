@@ -246,7 +246,8 @@ const AdminBanners = () => {
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
 
         {banners.length === 0 && (
           <div className="bg-white rounded-lg shadow-md p-12 text-center">

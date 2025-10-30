@@ -192,6 +192,30 @@ frontend:
         agent: "testing"
         comment: "✅ TESTED: Dynamic banner display working perfectly on homepage. Custom banner 'Updated Lakeside Restaurant Banner' displayed with correct title, description 'Experience authentic Indian cuisine by the lakeside with stunning views and exceptional service', and button text 'View Menu'. Carousel navigation (next/prev buttons) functional. Banner fetched from API and properly rendered with image, text overlay, and interactive elements."
 
+  - task: "Gallery image file upload UI"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/admin/AdminGallery.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Fixed gallery image display issue in admin panel. Replaced URL input with file input, added image preview, uploading state, and proper image URL handling for both absolute and relative paths. Gallery images now showing correctly in backend admin panel."
+
+  - task: "Gallery image display on public page"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/Gallery.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Updated Gallery.js to properly handle both absolute and relative image URLs for uploaded gallery images. Updated both grid view and lightbox modal."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"

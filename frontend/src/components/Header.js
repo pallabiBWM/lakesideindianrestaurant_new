@@ -62,8 +62,8 @@ const Header = () => {
           </nav>
 
           {/* Order Online Button OR Cart & Wishlist Icons */}
-          {location.pathname === '/menu/takeaway' ? (
-            // Show Cart & Wishlist on Order Online page
+          {(location.pathname === '/menu/takeaway' || location.pathname === '/cart' || location.pathname === '/wishlist') ? (
+            // Show Cart & Wishlist on Order Online, Cart, and Wishlist pages
             <div className="hidden lg:flex items-center space-x-6">
               <Link to="/wishlist" className="relative text-white hover:text-red-600 transition-colors" data-testid="wishlist-icon">
                 <Heart className="w-6 h-6" />

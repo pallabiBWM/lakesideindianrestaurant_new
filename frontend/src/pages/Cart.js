@@ -160,6 +160,7 @@ const Cart = () => {
                 </div>
                 <div className="space-y-3">
                   <button
+                    onClick={() => navigate('/checkout')}
                     className="w-full bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
                     data-testid="checkout-button"
                   >

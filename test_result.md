@@ -282,3 +282,35 @@ agent_communication:
       • Image URL handling (relative/absolute) working
       
       FINAL STATUS: Banner image upload feature is FULLY FUNCTIONAL and ready for production use. All core functionality tested and verified working correctly.
+
+  - agent: "main"
+    message: |
+      NEW TASK: Gallery Image Upload Feature Implementation
+      
+      User reported two issues with gallery feature:
+      1. Backend admin panel not showing gallery images (even though frontend displays them)
+      2. Need to change "Image URL" input to "Image Upload" option (same as banners)
+      
+      Implementation completed:
+      
+      Backend Changes:
+      1. Added gallery image upload endpoint at /api/admin/gallery/upload
+      2. Implemented file type validation (JPG, PNG, GIF, WebP)
+      3. Generates unique filenames using UUID
+      4. Saves files asynchronously using aiofiles
+      5. Returns relative URL path for saved images
+      6. Reuses existing /uploads directory for static file serving
+      
+      Frontend Changes:
+      1. Fixed AdminGallery.js to display existing gallery images correctly
+      2. Replaced URL input with file input in modal
+      3. Added image preview functionality
+      4. Shows uploading state during file upload
+      5. Updated Gallery.js (public page) to handle both absolute and relative URLs
+      6. Updated AdminGallery.js image display to handle both URL types
+      
+      Both issues resolved:
+      - Gallery images now visible in backend admin panel
+      - File upload interface ready for adding new gallery images
+      
+      Next: Need to run comprehensive testing

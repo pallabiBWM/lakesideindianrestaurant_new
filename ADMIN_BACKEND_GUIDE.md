@@ -19,20 +19,20 @@ The backend is currently accessible via API endpoints. You can test and use it t
 
 Visit these URLs directly in your browser:
 
-- **API Root:** https://lakeside-menu-app.preview.emergentagent.com/api/
-- **Get All Dine-in Menu:** https://lakeside-menu-app.preview.emergentagent.com/api/menu?menu_type=dine-in
-- **Get All Takeaway Menu:** https://lakeside-menu-app.preview.emergentagent.com/api/menu?menu_type=takeaway
-- **Get Categories:** https://lakeside-menu-app.preview.emergentagent.com/api/categories
-- **Get Testimonials:** https://lakeside-menu-app.preview.emergentagent.com/api/testimonials
-- **Get Gallery:** https://lakeside-menu-app.preview.emergentagent.com/api/gallery
-- **Get Statistics:** https://lakeside-menu-app.preview.emergentagent.com/api/statistics
-- **Get Settings:** https://lakeside-menu-app.preview.emergentagent.com/api/settings
+- **API Root:** https://tandoor-express.preview.emergentagent.com/api/
+- **Get All Dine-in Menu:** https://tandoor-express.preview.emergentagent.com/api/menu?menu_type=dine-in
+- **Get All Takeaway Menu:** https://tandoor-express.preview.emergentagent.com/api/menu?menu_type=takeaway
+- **Get Categories:** https://tandoor-express.preview.emergentagent.com/api/categories
+- **Get Testimonials:** https://tandoor-express.preview.emergentagent.com/api/testimonials
+- **Get Gallery:** https://tandoor-express.preview.emergentagent.com/api/gallery
+- **Get Statistics:** https://tandoor-express.preview.emergentagent.com/api/statistics
+- **Get Settings:** https://tandoor-express.preview.emergentagent.com/api/settings
 
 #### **2. Using curl (command line)**
 
 **Login to get access token:**
 ```bash
-curl -X POST https://lakeside-menu-app.preview.emergentagent.com/api/admin/login \
+curl -X POST https://tandoor-express.preview.emergentagent.com/api/admin/login \
   -H "Content-Type: application/json" \
   -d '{"username": "admin", "password": "admin123"}'
 ```
@@ -41,19 +41,19 @@ Response will contain an `access_token`. Use it for all admin operations.
 
 **View all contacts (with token):**
 ```bash
-curl https://lakeside-menu-app.preview.emergentagent.com/api/admin/contacts \
+curl https://tandoor-express.preview.emergentagent.com/api/admin/contacts \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN_HERE"
 ```
 
 **View all reservations:**
 ```bash
-curl https://lakeside-menu-app.preview.emergentagent.com/api/admin/reservations \
+curl https://tandoor-express.preview.emergentagent.com/api/admin/reservations \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN_HERE"
 ```
 
 **Update settings:**
 ```bash
-curl -X PUT https://lakeside-menu-app.preview.emergentagent.com/api/admin/settings \
+curl -X PUT https://tandoor-express.preview.emergentagent.com/api/admin/settings \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN_HERE" \
   -H "Content-Type: application/json" \
   -d '{
@@ -74,7 +74,7 @@ curl -X PUT https://lakeside-menu-app.preview.emergentagent.com/api/admin/settin
 
 1. Download Postman: https://www.postman.com/downloads/
 2. Create a new request
-3. Set URL: `https://lakeside-menu-app.preview.emergentagent.com/api/admin/login`
+3. Set URL: `https://tandoor-express.preview.emergentagent.com/api/admin/login`
 4. Method: POST
 5. Body: JSON
    ```json
@@ -159,26 +159,26 @@ SMTP_FROM_EMAIL=your-email@gmail.com
 
 ```bash
 # Login first
-TOKEN=$(curl -s -X POST https://lakeside-menu-app.preview.emergentagent.com/api/admin/login \
+TOKEN=$(curl -s -X POST https://tandoor-express.preview.emergentagent.com/api/admin/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"admin123"}' | jq -r '.access_token')
 
 # Get contacts
-curl https://lakeside-menu-app.preview.emergentagent.com/api/admin/contacts \
+curl https://tandoor-express.preview.emergentagent.com/api/admin/contacts \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ### 2. **View Reservations**
 
 ```bash
-curl https://lakeside-menu-app.preview.emergentagent.com/api/admin/reservations \
+curl https://tandoor-express.preview.emergentagent.com/api/admin/reservations \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ### 3. **Add New Menu Item**
 
 ```bash
-curl -X POST https://lakeside-menu-app.preview.emergentagent.com/api/admin/menu \
+curl -X POST https://tandoor-express.preview.emergentagent.com/api/admin/menu \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -195,7 +195,7 @@ curl -X POST https://lakeside-menu-app.preview.emergentagent.com/api/admin/menu 
 ### 4. **Update Menu Item**
 
 ```bash
-curl -X PUT https://lakeside-menu-app.preview.emergentagent.com/api/admin/menu/ITEM_ID \
+curl -X PUT https://tandoor-express.preview.emergentagent.com/api/admin/menu/ITEM_ID \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -207,14 +207,14 @@ curl -X PUT https://lakeside-menu-app.preview.emergentagent.com/api/admin/menu/I
 ### 5. **Delete Menu Item**
 
 ```bash
-curl -X DELETE https://lakeside-menu-app.preview.emergentagent.com/api/admin/menu/ITEM_ID \
+curl -X DELETE https://tandoor-express.preview.emergentagent.com/api/admin/menu/ITEM_ID \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ### 6. **Change Admin Email**
 
 ```bash
-curl -X PUT https://lakeside-menu-app.preview.emergentagent.com/api/admin/settings \
+curl -X PUT https://tandoor-express.preview.emergentagent.com/api/admin/settings \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -275,7 +275,7 @@ curl -X PUT https://lakeside-menu-app.preview.emergentagent.com/api/admin/settin
 
 For technical support or questions:
 - Check backend logs: `tail -f /var/log/supervisor/backend.err.log`
-- Check API status: https://lakeside-menu-app.preview.emergentagent.com/api/
+- Check API status: https://tandoor-express.preview.emergentagent.com/api/
 
 ---
 

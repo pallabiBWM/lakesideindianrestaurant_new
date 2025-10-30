@@ -13,7 +13,7 @@ import io
 import uuid
 
 # Configuration
-BASE_URL = "https://lakeside-menu-app.preview.emergentagent.com/api"
+BASE_URL = "https://tandoor-express.preview.emergentagent.com/api"
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin123"
 
@@ -640,7 +640,7 @@ class BannerUploadTester:
                 )
             
             # Test accessing via external URL (may have routing issues)
-            external_url = f"https://lakeside-menu-app.preview.emergentagent.com{uploaded_file_info['url']}"
+            external_url = f"https://tandoor-express.preview.emergentagent.com{uploaded_file_info['url']}"
             
             response = requests.get(external_url, timeout=10)
             

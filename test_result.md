@@ -297,7 +297,7 @@ agent_communication:
       • File Storage - Images saved to /app/backend/uploads/ with UUID filenames
       
       ⚠️ MINOR INFRASTRUCTURE ISSUE:
-      • External URL routing (https://lakeside-menu-app.preview.emergentagent.com/uploads/) returns HTML instead of image
+      • External URL routing (https://tandoor-express.preview.emergentagent.com/uploads/) returns HTML instead of image
       • This is a Kubernetes ingress configuration issue, NOT a backend code problem
       • Backend static file serving works correctly when accessed directly
       

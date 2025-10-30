@@ -87,21 +87,18 @@ const Header = () => {
             <nav className="flex flex-col space-y-4">
               <MobileNavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</MobileNavLink>
               <MobileNavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About Us</MobileNavLink>
-              <MobileNavLink to="/menu/dine-in" onClick={() => setIsMobileMenuOpen(false)}>Dine-in Menu</MobileNavLink>
-              <MobileNavLink to="/menu/takeaway" onClick={() => setIsMobileMenuOpen(false)}>Takeaway Menu</MobileNavLink>
+              <MobileNavLink to="/menu/dine-in" onClick={() => setIsMobileMenuOpen(false)}>Our Menu</MobileNavLink>
               <MobileNavLink to="/gallery" onClick={() => setIsMobileMenuOpen(false)}>Gallery</MobileNavLink>
               <MobileNavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</MobileNavLink>
               <MobileNavLink to="/reservation" onClick={() => setIsMobileMenuOpen(false)}>Reservation</MobileNavLink>
-              <div className="flex space-x-6 pt-4">
-                <Link to="/wishlist" className="flex items-center text-white hover:text-red-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Heart className="w-5 h-5 mr-2" />
-                  Wishlist ({wishlist.menu_item_ids.length})
-                </Link>
-                <Link to="/cart" className="flex items-center text-white hover:text-red-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                  <ShoppingCart className="w-5 h-5 mr-2" />
-                  Cart ({getCartItemCount()})
-                </Link>
-              </div>
+              
+              <Link 
+                to="/menu/takeaway" 
+                className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors text-center mt-4"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Order Online
+              </Link>
             </nav>
           </div>
         )}

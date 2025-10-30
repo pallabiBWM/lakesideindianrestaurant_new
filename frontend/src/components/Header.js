@@ -55,30 +55,19 @@ const Header = () => {
           <nav className="hidden lg:flex items-center space-x-6">
             <NavLink to="/" active={location.pathname === '/'}>Home</NavLink>
             <NavLink to="/about" active={location.pathname === '/about'}>About Us</NavLink>
-            <NavLink to="/menu/dine-in" active={location.pathname === '/menu/dine-in'}>Dine-in Menu</NavLink>
-            <NavLink to="/menu/takeaway" active={location.pathname === '/menu/takeaway'}>Takeaway Menu</NavLink>
+            <NavLink to="/menu/dine-in" active={location.pathname === '/menu/dine-in'}>Our Menu</NavLink>
             <NavLink to="/gallery" active={location.pathname === '/gallery'}>Gallery</NavLink>
             <NavLink to="/contact" active={location.pathname === '/contact'}>Contact Us</NavLink>
             <NavLink to="/reservation" active={location.pathname === '/reservation'}>Reservation</NavLink>
           </nav>
 
-          {/* Cart & Wishlist Icons */}
-          <div className="hidden lg:flex items-center space-x-6">
-            <Link to="/wishlist" className="relative text-white hover:text-red-600 transition-colors" data-testid="wishlist-icon">
-              <Heart className="w-6 h-6" />
-              {wishlist.menu_item_ids.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" data-testid="wishlist-count">
-                  {wishlist.menu_item_ids.length}
-                </span>
-              )}
-            </Link>
-            <Link to="/cart" className="relative text-white hover:text-red-600 transition-colors" data-testid="cart-icon">
-              <ShoppingCart className="w-6 h-6" />
-              {getCartItemCount() > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" data-testid="cart-count">
-                  {getCartItemCount()}
-                </span>
-              )}
+          {/* Order Online Button */}
+          <div className="hidden lg:flex items-center">
+            <Link 
+              to="/menu/takeaway" 
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+            >
+              Order Online
             </Link>
           </div>
 

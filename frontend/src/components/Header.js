@@ -94,13 +94,15 @@ const Header = () => {
               <MobileNavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</MobileNavLink>
               <MobileNavLink to="/reservation" onClick={() => setIsMobileMenuOpen(false)}>Reservation</MobileNavLink>
               
-              <Link 
-                to="/menu/takeaway" 
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors text-center mt-4"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Order Online
-              </Link>
+              {location.pathname !== '/menu/takeaway' && (
+                <Link 
+                  to="/menu/takeaway" 
+                  className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors text-center mt-4"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Order Online
+                </Link>
+              )}
             </nav>
           </div>
         )}

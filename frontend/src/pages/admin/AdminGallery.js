@@ -89,7 +89,8 @@ const AdminGallery = () => {
       await axios.delete(`${API}/admin/gallery/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      fetchImages();
+      alert('Gallery image deleted successfully!');
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting image:', error);
       alert('Failed to delete image');

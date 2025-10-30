@@ -324,11 +324,20 @@ const Home = () => {
 
       {/* Testimonials Slider */}
       {testimonials.length > 0 && (
-        <section className="py-16 px-4 bg-black text-white" data-testid="testimonials-section">
-          <div className="container mx-auto max-w-4xl">
-            <h2 className="text-4xl font-bold text-center mb-12">What Our <span className="text-red-600">Customers</span> Say</h2>
+        <section 
+          className="py-16 px-4 bg-cover bg-center bg-no-repeat relative" 
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1667388969250-1c7220bf3f37?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwxfHxyZXN0YXVyYW50JTIwaW50ZXJpb3J8ZW58MHx8fHwxNzYxODEyNDc2fDA&ixlib=rb-4.1.0&q=85)'
+          }}
+          data-testid="testimonials-section"
+        >
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+          
+          <div className="container mx-auto max-w-4xl relative z-10">
+            <h2 className="text-4xl font-bold text-center mb-12 text-white">What Our <span className="text-red-600">Customers</span> Say</h2>
             <div className="relative">
-              <div className="text-center">
+              <div className="text-center text-white">
                 <div className="flex justify-center mb-4">
                   {[...Array(testimonials[currentTestimonial]?.rating || 5)].map((_, i) => (
                     <Star key={i} className="w-6 h-6 fill-red-600 text-red-600" />
@@ -343,7 +352,7 @@ const Home = () => {
                     key={index}
                     onClick={() => setCurrentTestimonial(index)}
                     className={`w-3 h-3 rounded-full transition-colors ${
-                      index === currentTestimonial ? 'bg-red-600' : 'bg-gray-600'
+                      index === currentTestimonial ? 'bg-red-600' : 'bg-gray-400'
                     }`}
                     data-testid={`testimonial-dot-${index}`}
                   />

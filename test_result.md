@@ -237,6 +237,18 @@ frontend:
         agent: "testing"
         comment: "✅ END-TO-END VERIFICATION COMPLETED: Public gallery page tested with newly uploaded image 'Test Gallery Upload'. Gallery banner displays correctly with 'Our Gallery' title. New uploaded image appears in responsive grid layout alongside existing 6 gallery images. Image URL handling working correctly for uploaded images (relative URLs). Lightbox functionality fully verified - clicking on new uploaded image opens full-size view with correct title 'Test Gallery Upload' and description 'Testing the image upload functionality'. Close button (X) functional, lightbox closes correctly. All gallery display features working as expected with uploaded content."
 
+  - task: "Continue Shopping button functionality"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/Cart.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Complete Continue Shopping button flow working perfectly. Successfully tested 9-step flow: Navigate to takeaway menu → Add item to cart (Veg Samosa $9.99) → Navigate to cart → Verify cart contents → Locate Continue Shopping button in Order Summary → Verify href='/menu/takeaway' → Click button → Navigate back to takeaway menu → Verify menu loads with all 125 items. Cart count preserved (1 item), URL routing correct, no console errors. Button positioned correctly in Order Summary section with proper styling and functionality. All test scenarios passed with 100% success rate."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"

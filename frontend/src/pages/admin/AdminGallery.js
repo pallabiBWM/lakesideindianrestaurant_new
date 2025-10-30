@@ -154,17 +154,25 @@ const AdminGallery = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {images.map((image) => {
-          const imageUrl = image.url.startsWith('http') ? image.url : `${BACKEND_URL}${image.url}`;
-          console.log('Gallery image URL:', imageUrl, 'Original:', image.url);
+          // Handle different URL formats: absolute HTTP, /api/uploads/, /uploads/
+          let imageUrl;
+          if (image.url.startsWith('http')) {
+            imageUrl = image.url;
+          } else if (image.url.startsWith('/api/')) {
+            imageUrl = `${BACKEND_URL}${image.url}`;
+          } else if (image.url.startsWith('/uploads/')) {
+            // Convert old /uploads/ to new /api/uploads/
+            imageUrl = `${BACKEND_URL}/api${image.url}`;
+          } else {
+            imageUrl = `${BACKEND_URL}${image.url}`;
+          }
+          
           return (
             <div key={image.id} className="bg-white rounded-lg shadow-md overflow-hidden">
               <img 
                 src={imageUrl}
                 alt={image.title} 
                 className="w-full h-48 object-cover" 
-                onError={(e) => {
-                  console.error('Image failed to load:', imageUrl);
-                }}
               />
               <div className="p-4">
                 <h3 className="font-semibold text-lg mb-1">{image.title}</h3>

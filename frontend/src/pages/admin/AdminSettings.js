@@ -181,6 +181,66 @@ const AdminSettings = () => {
             ></textarea>
           </div>
 
+          {/* Header Logo Upload */}
+          <div>
+            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+              <Upload className="w-4 h-4 mr-2" />
+              Header Logo
+            </label>
+            <div className="space-y-3">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleLogoUpload(e, 'header')}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                disabled={uploading.header}
+              />
+              {uploading.header && (
+                <p className="text-sm text-gray-600">Uploading header logo...</p>
+              )}
+              {settings.header_logo && (
+                <div className="mt-3">
+                  <p className="text-xs text-gray-500 mb-2">Current Header Logo:</p>
+                  <img 
+                    src={settings.header_logo.startsWith('http') ? settings.header_logo : `${BACKEND_URL}${settings.header_logo.startsWith('/api/') ? settings.header_logo : '/api' + settings.header_logo}`}
+                    alt="Header Logo" 
+                    className="h-16 object-contain border p-2 rounded bg-gray-50"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Footer Logo Upload */}
+          <div>
+            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+              <Upload className="w-4 h-4 mr-2" />
+              Footer Logo
+            </label>
+            <div className="space-y-3">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleLogoUpload(e, 'footer')}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                disabled={uploading.footer}
+              />
+              {uploading.footer && (
+                <p className="text-sm text-gray-600">Uploading footer logo...</p>
+              )}
+              {settings.footer_logo && (
+                <div className="mt-3">
+                  <p className="text-xs text-gray-500 mb-2">Current Footer Logo:</p>
+                  <img 
+                    src={settings.footer_logo.startsWith('http') ? settings.footer_logo : `${BACKEND_URL}${settings.footer_logo.startsWith('/api/') ? settings.footer_logo : '/api' + settings.footer_logo}`}
+                    alt="Footer Logo" 
+                    className="h-16 object-contain border p-2 rounded bg-gray-50"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Opening Hours */}
           <div>
             <label className="flex items-center text-sm font-semibold text-gray-700 mb-4">

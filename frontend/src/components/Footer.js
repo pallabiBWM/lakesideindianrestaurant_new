@@ -1,9 +1,33 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Phone, Mail, MapPin } from 'lucide-react';
+import axios from 'axios';
 
-const LOGO_URL = 'https://customer-assets.emergentagent.com/job_spice-harbor-1/artifacts/j7td7vej_WhatsApp_Image_2025-10-21_at_11.56.02__1_-removebg-preview.png';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+const DEFAULT_LOGO = 'https://customer-assets.emergentagent.com/job_spice-harbor-1/artifacts/j7td7vej_WhatsApp_Image_2025-10-21_at_11.56.02__1_-removebg-preview.png';
 
 const Footer = () => {
+  const [footerLogo, setFooterLogo] = useState(DEFAULT_LOGO);
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const response = await axios.get(`${API}/settings`);
+      if (response.data.footer_logo) {
+        const logoUrl = response.data.footer_logo.startsWith('http') 
+          ? response.data.footer_logo 
+          : `${BACKEND_URL}${response.data.footer_logo.startsWith('/api/') ? response.data.footer_logo : '/api' + response.data.footer_logo}`;
+        setFooterLogo(logoUrl);
+      }
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    }
+  };
+
   return (
     <footer className="bg-black text-white pt-12 pb-6" data-testid="footer">
       <div className="container mx-auto px-4">
@@ -12,12 +36,12 @@ const Footer = () => {
           <div>
             <Link to="/" className="inline-block mb-4">
               <img 
-                src={LOGO_URL} 
+                src={footerLogo} 
                 alt="Lakeside Indian Restaurant" 
                 className="h-16 w-auto"
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60"%3E%3Ctext x="10" y="40" font-family="Arial" font-size="24" fill="%23DC2626" font-weight="bold"%3ELakeside%3C/text%3E%3C/svg%3E';
+                  e.target.src = DEFAULT_LOGO;
                 }}
               />
             </Link>

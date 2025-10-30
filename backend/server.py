@@ -859,6 +859,151 @@ async def upload_banner_image(file: UploadFile = File(...), username: str = Depe
         raise HTTPException(status_code=500, detail=f"Error uploading file: {str(e)}")
 
 
+# ============= ORDER ROUTES =============
+
+@api_router.post("/orders")
+async def create_order(order_data: OrderCreate):
+    """Create a new order"""
+    try:
+        # Generate order ID
+        order_id = f"ORD-{str(uuid.uuid4())[:8].upper()}"
+        
+        # Create order document
+        order = Order(
+            order_id=order_id,
+            customer_name=order_data.customer_name,
+            customer_email=order_data.customer_email,
+            customer_phone=order_data.customer_phone,
+            delivery_address=order_data.delivery_address,
+            items=order_data.items,
+            subtotal=order_data.subtotal,
+            tax=order_data.tax,
+            delivery_fee=order_data.delivery_fee,
+            total=order_data.total,
+            payment_method=order_data.payment_method,
+            status=order_data.status,
+            created_at=datetime.now(timezone.utc)
+        )
+        
+        # Prepare for MongoDB (convert datetime to ISO string)
+        order_dict = order.model_dump()
+        order_dict['created_at'] = order_dict['created_at'].isoformat()
+        
+        # Insert into database
+        await db.orders.insert_one(order_dict)
+        
+        # Fetch menu items for order details
+        menu_item_ids = [item.menu_item_id for item in order_data.items]
+        menu_items = await db.menu_items.find({"id": {"$in": menu_item_ids}}, {"_id": 0}).to_list(length=None)
+        
+        # Create item details for email
+        item_details = []
+        for item in order_data.items:
+            menu_item = next((m for m in menu_items if m['id'] == item.menu_item_id), None)
+            if menu_item:
+                item_details.append({
+                    "name": menu_item['name'],
+                    "quantity": item.quantity,
+                    "price": menu_item['price'],
+                    "subtotal": menu_item['price'] * item.quantity
+                })
+        
+        # Send confirmation email to customer
+        try:
+            await email_service.send_order_confirmation(
+                to_email=order_data.customer_email,
+                customer_name=order_data.customer_name,
+                order_id=order_id,
+                items=item_details,
+                subtotal=order_data.subtotal,
+                tax=order_data.tax,
+                delivery_fee=order_data.delivery_fee,
+                total=order_data.total,
+                delivery_address=order_data.delivery_address,
+                payment_method=order_data.payment_method
+            )
+        except Exception as e:
+            logger.error(f"Failed to send order confirmation email: {str(e)}")
+            # Don't fail the order if email fails
+        
+        # Send notification email to admin
+        try:
+            settings = await db.settings.find_one({"id": "settings"}, {"_id": 0})
+            if settings and settings.get('admin_email'):
+                await email_service.send_new_order_notification(
+                    to_email=settings['admin_email'],
+                    order_id=order_id,
+                    customer_name=order_data.customer_name,
+                    customer_phone=order_data.customer_phone,
+                    items=item_details,
+                    total=order_data.total,
+                    delivery_address=order_data.delivery_address
+                )
+        except Exception as e:
+            logger.error(f"Failed to send admin notification email: {str(e)}")
+        
+        return {
+            "message": "Order placed successfully",
+            "order_id": order_id,
+            "status": "success"
+        }
+    
+    except Exception as e:
+        logger.error(f"Error creating order: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error creating order: {str(e)}")
+
+
+@api_router.get("/orders", dependencies=[Depends(verify_token)])
+async def get_orders():
+    """Get all orders (Admin only)"""
+    try:
+        orders = await db.orders.find({}, {"_id": 0}).to_list(length=None)
+        
+        # Sort by created_at descending (newest first)
+        orders.sort(key=lambda x: x.get('created_at', ''), reverse=True)
+        
+        return orders
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching orders: {str(e)}")
+
+
+@api_router.get("/orders/{order_id}", dependencies=[Depends(verify_token)])
+async def get_order(order_id: str):
+    """Get a specific order (Admin only)"""
+    try:
+        order = await db.orders.find_one({"order_id": order_id}, {"_id": 0})
+        if not order:
+            raise HTTPException(status_code=404, detail="Order not found")
+        return order
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching order: {str(e)}")
+
+
+@api_router.patch("/orders/{order_id}", dependencies=[Depends(verify_token)])
+async def update_order_status(order_id: str, order_update: OrderUpdate):
+    """Update order status (Admin only)"""
+    try:
+        update_data = {k: v for k, v in order_update.model_dump().items() if v is not None}
+        
+        if not update_data:
+            raise HTTPException(status_code=400, detail="No fields to update")
+        
+        result = await db.orders.update_one(
+            {"order_id": order_id},
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Order not found")
+        
+        return {"message": "Order updated successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating order: {str(e)}")
+
 
 # Include the router in the main app
 app.include_router(api_router)

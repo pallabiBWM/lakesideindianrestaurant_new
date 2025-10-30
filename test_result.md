@@ -224,10 +224,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Banner file upload endpoint"
-    - "Static file serving for uploads"
-    - "Banner image file upload UI"
-    - "Dynamic banner display on homepage"
+    - "Gallery image upload endpoint"
+    - "Gallery image file upload UI"
+    - "Gallery image display on public page"
   stuck_tasks: []
   test_all: true
   test_priority: "sequential"

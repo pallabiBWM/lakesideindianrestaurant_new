@@ -226,8 +226,17 @@ const Home = () => {
       </section>
 
       {/* Statistics Section */}
-      <section className="bg-black text-white py-16 px-4" data-testid="statistics-section">
-        <div className="container mx-auto">
+      <section 
+        className="bg-cover bg-center bg-no-repeat relative py-16 px-4" 
+        style={{
+          backgroundImage: 'url(https://images.unsplash.com/photo-1506368249639-73a05d6f6488?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGluZGlhbiUyMHNwaWNlc3xlbnwwfHwwfHx8MA%3D%3D&fm=jpg&q=60&w=3000)'
+        }}
+        data-testid="statistics-section"
+      >
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black bg-opacity-75"></div>
+        
+        <div className="container mx-auto relative z-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <StatCard number={statistics.happy_customers || 0} label="Happy Customers" />
             <StatCard number={statistics.dishes_served || 0} label="Dishes Served" />

@@ -149,7 +149,11 @@ const AdminGallery = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {images.map((image) => (
           <div key={image.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <img src={image.url} alt={image.title} className="w-full h-48 object-cover" />
+            <img 
+              src={image.url.startsWith('http') ? image.url : `${BACKEND_URL}${image.url}`}
+              alt={image.title} 
+              className="w-full h-48 object-cover" 
+            />
             <div className="p-4">
               <h3 className="font-semibold text-lg mb-1">{image.title}</h3>
               <p className="text-sm text-gray-600 mb-3">{image.description}</p>

@@ -60,8 +60,17 @@ const AdminBanners = () => {
   const handleEdit = (banner) => {
     setEditingBanner(banner);
     setSelectedFile(null);
-    // Handle both absolute and relative URLs
-    const imageUrl = banner.image.startsWith('http') ? banner.image : `${BACKEND_URL}${banner.image}`;
+    // Handle different URL formats
+    let imageUrl;
+    if (banner.image.startsWith('http')) {
+      imageUrl = banner.image;
+    } else if (banner.image.startsWith('/api/')) {
+      imageUrl = `${BACKEND_URL}${banner.image}`;
+    } else if (banner.image.startsWith('/uploads/')) {
+      imageUrl = `${BACKEND_URL}/api${banner.image}`;
+    } else {
+      imageUrl = `${BACKEND_URL}${banner.image}`;
+    }
     setPreviewUrl(imageUrl);
     setFormData(banner);
     setShowModal(true);

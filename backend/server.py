@@ -628,8 +628,8 @@ async def upload_gallery_image(file: UploadFile = File(...), username: str = Dep
             content = await file.read()
             await f.write(content)
         
-        # Return relative URL path
-        image_url = f"/uploads/{unique_filename}"
+        # Return API endpoint URL instead of static file URL
+        image_url = f"/api/uploads/{unique_filename}"
         
         return {
             "url": image_url,
@@ -638,6 +638,28 @@ async def upload_gallery_image(file: UploadFile = File(...), username: str = Dep
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error uploading file: {str(e)}")
+
+@api_router.get("/uploads/{filename}")
+async def serve_uploaded_file(filename: str):
+    """Serve uploaded images through API endpoint"""
+    file_path = UPLOADS_DIR / filename
+    
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="File not found")
+    
+    # Determine content type based on file extension
+    extension = filename.split('.')[-1].lower()
+    content_types = {
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'png': 'image/png',
+        'gif': 'image/gif',
+        'webp': 'image/webp'
+    }
+    content_type = content_types.get(extension, 'application/octet-stream')
+    
+    from fastapi.responses import FileResponse
+    return FileResponse(file_path, media_type=content_type)
 
 # Statistics Route
 @api_router.get("/statistics")

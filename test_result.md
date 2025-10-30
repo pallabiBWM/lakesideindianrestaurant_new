@@ -149,6 +149,18 @@ backend:
         agent: "testing"
         comment: "✅ TESTED: Complete banner CRUD flow working with uploaded images. Created banner with uploaded image URL, verified in admin list (/api/admin/banners), verified in public list (/api/banners), updated banner successfully, deleted banner successfully. All endpoints working correctly."
 
+  - task: "Gallery image upload endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Created /api/admin/gallery/upload endpoint with file validation, unique filename generation, and async file saving. Returns relative URL path (/uploads/filename). Reuses existing uploads directory and static file serving."
+
 frontend:
   - task: "Banner image file upload UI"
     implemented: true

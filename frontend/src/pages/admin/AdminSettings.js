@@ -70,6 +70,37 @@ const AdminSettings = () => {
     }));
   };
 
+  const handleLogoUpload = async (e, logoType) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploading(prev => ({ ...prev, [logoType]: true }));
+    setMessage('');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('logo_type', logoType);
+
+      const response = await axios.post(`${API}/admin/settings/upload-logo?logo_type=${logoType}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      // Update settings with new logo URL
+      const logoField = `${logoType}_logo`;
+      setSettings(prev => ({ ...prev, [logoField]: response.data.url }));
+      setMessage(`${logoType.charAt(0).toUpperCase() + logoType.slice(1)} logo uploaded successfully!`);
+    } catch (error) {
+      setMessage(`Error uploading ${logoType} logo. Please try again.`);
+      console.error(`Error uploading ${logoType} logo:`, error);
+    } finally {
+      setUploading(prev => ({ ...prev, [logoType]: false }));
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }

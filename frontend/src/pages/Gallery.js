@@ -61,7 +61,20 @@ const Gallery = () => {
       <section className="py-16 px-4">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {images.map((image) => (
+            {images.map((image) => {
+              // Handle different URL formats
+              let imageUrl;
+              if (image.url.startsWith('http')) {
+                imageUrl = image.url;
+              } else if (image.url.startsWith('/api/')) {
+                imageUrl = `${BACKEND_URL}${image.url}`;
+              } else if (image.url.startsWith('/uploads/')) {
+                imageUrl = `${BACKEND_URL}/api${image.url}`;
+              } else {
+                imageUrl = `${BACKEND_URL}${image.url}`;
+              }
+              
+              return (
               <div
                 key={image.id}
                 className="relative h-80 overflow-hidden rounded-lg cursor-pointer group"
@@ -69,7 +82,7 @@ const Gallery = () => {
                 data-testid={`gallery-image-${image.id}`}
               >
                 <img
-                  src={image.url.startsWith('http') ? image.url : `${BACKEND_URL}${image.url}?t=${Date.now()}`}
+                  src={imageUrl}
                   alt={image.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
@@ -80,7 +93,8 @@ const Gallery = () => {
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

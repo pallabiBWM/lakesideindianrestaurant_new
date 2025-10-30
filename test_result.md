@@ -197,15 +197,18 @@ frontend:
 
   - task: "Gallery image file upload UI"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/frontend/src/pages/admin/AdminGallery.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Fixed gallery image display issue in admin panel. Replaced URL input with file input, added image preview, uploading state, and proper image URL handling for both absolute and relative paths. Gallery images now showing correctly in backend admin panel."
+      - working: "NA"
+        agent: "testing"
+        comment: "Frontend UI testing not performed as per system limitations. Backend API integration confirmed working - gallery upload endpoint accepts file uploads and creates gallery images successfully."
 
   - task: "Gallery image display on public page"
     implemented: true

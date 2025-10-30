@@ -19,7 +19,11 @@ const AdminSettings = () => {
       monday_thursday: '',
       friday_saturday: '',
       sunday: ''
-    }
+    },
+    happy_customers: 5000,
+    dishes_served: 25000,
+    years_experience: 15,
+    team_members: 30
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
